@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_statemine/common/constants.dart';
+import 'package:polkawallet_plugin_statemine/pages/assetDetailPage.dart';
 import 'package:polkawallet_plugin_statemine/pages/assetsList.dart';
 import 'package:polkawallet_plugin_statemine/service/index.dart';
 import 'package:polkawallet_plugin_statemine/store/cache/storeCache.dart';
@@ -89,6 +90,7 @@ class PluginStatemine extends PolkawalletPlugin {
           TxConfirmPage(this, keyring, _service.getPassword),
 
       // assets pages
+      AssetDetailPage.route: (_) => AssetDetailPage(this),
     };
   }
 

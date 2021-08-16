@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
+import 'package:polkawallet_plugin_statemine/service/serviceAccount.dart';
 import 'package:polkawallet_plugin_statemine/service/serviceAssets.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
@@ -9,8 +10,11 @@ import 'package:polkawallet_ui/utils/i18n.dart';
 
 class PluginService {
   PluginService(PluginStatemine plugin, Keyring keyring)
-      : assets = ServiceAssets(plugin, keyring),
+      : account = ServiceAccount(plugin, keyring),
+        assets = ServiceAssets(plugin, keyring),
         plugin = plugin;
+
+  final ServiceAccount account;
   final ServiceAssets assets;
 
   final PluginStatemine plugin;

@@ -21,6 +21,9 @@ abstract class _AssetsStore with Store {
   List<TokenBalanceData> assetsAll = [];
 
   @observable
+  ObservableMap<String, Map> assetsDetails = ObservableMap<String, Map>();
+
+  @observable
   ObservableMap<String, double> marketPrices = ObservableMap();
 
   @action
@@ -57,6 +60,11 @@ abstract class _AssetsStore with Store {
   @action
   void setAllAssets(List<TokenBalanceData> data) {
     assetsAll = data;
+  }
+
+  @action
+  void setAssetsDetails(Map<String, Map> data) {
+    assetsDetails.addAll(data);
   }
 
   @action

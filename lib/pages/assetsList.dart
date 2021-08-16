@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:polkawallet_plugin_statemine/pages/assetDetailPage.dart';
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
 import 'package:polkawallet_plugin_statemine/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -87,6 +88,8 @@ class _AssetsListState extends State<AssetsList> {
                       '#${list[i].id}',
                       style: Theme.of(context).textTheme.headline4,
                     ),
+                    onTap: () => Navigator.of(context)
+                        .pushNamed(AssetDetailPage.route, arguments: list[i]),
                   );
                 },
               ),

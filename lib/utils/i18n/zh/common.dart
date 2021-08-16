@@ -25,4 +25,13 @@ const Map<String, String> zhCommon = {
   'currency': '币种',
   'currency.select': '选择币种',
   'make': '发起转账',
+  'asset.symbol': '符号',
+  'asset.name': '名称',
+  'asset.decimals': '精度',
+  'asset.supply': '供应量',
+  'asset.minBalance': '最小余额',
+  'asset.owner': 'Owner',
+  'asset.issuer': '发行人',
+  'asset.admin': '管理人',
+  'asset.freezer': '冻结人',
 };

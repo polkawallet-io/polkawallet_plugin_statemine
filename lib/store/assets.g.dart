@@ -54,6 +54,21 @@ mixin _$AssetsStore on _AssetsStore, Store {
     });
   }
 
+  final _$assetsDetailsAtom = Atom(name: '_AssetsStore.assetsDetails');
+
+  @override
+  ObservableMap<String, Map> get assetsDetails {
+    _$assetsDetailsAtom.reportRead();
+    return super.assetsDetails;
+  }
+
+  @override
+  set assetsDetails(ObservableMap<String, Map> value) {
+    _$assetsDetailsAtom.reportWrite(value, super.assetsDetails, () {
+      super.assetsDetails = value;
+    });
+  }
+
   final _$_AssetsStoreActionController = ActionController(name: '_AssetsStore');
 
   @override
@@ -85,6 +100,17 @@ mixin _$AssetsStore on _AssetsStore, Store {
         name: '_AssetsStore.setAllAssets');
     try {
       return super.setAllAssets(data);
+    } finally {
+      _$_AssetsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setAssetsDetails(Map<String, Map> data) {
+    final _$actionInfo = _$_AssetsStoreActionController.startAction(
+        name: '_AssetsStore.setAssetsDetails');
+    try {
+      return super.setAssetsDetails(data);
     } finally {
       _$_AssetsStoreActionController.endAction(_$actionInfo);
     }
