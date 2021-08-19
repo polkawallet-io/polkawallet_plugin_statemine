@@ -34,4 +34,13 @@ const Map<String, String> enCommon = {
   'asset.issuer': 'Issuer',
   'asset.admin': 'Admin',
   'asset.freezer': 'Freezer',
+  'asset.txs': 'History',
+  'asset.select': 'Select Asset',
+  'transfer.exist': 'existential deposit',
+  'transfer.exist.info':
+      '\nThe minimum amount that an account should have to be deemed active.\n',
+  'transfer.min': 'min balance',
+  'transfer.min.info':
+      '\nThe minimum asset amount that an account should have.\n',
+  'transfer.fee': 'estimated transfer fee',
 };

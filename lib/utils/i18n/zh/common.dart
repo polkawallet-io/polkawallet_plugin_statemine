@@ -34,4 +34,11 @@ const Map<String, String> zhCommon = {
   'asset.issuer': '发行人',
   'asset.admin': '管理人',
   'asset.freezer': '冻结人',
+  'asset.txs': '转账记录',
+  'asset.select': '选择资产',
+  'transfer.exist': '存活余额',
+  'transfer.exist.info': '\n账户在网络上存活所需要的最小余额。\n',
+  'transfer.min': '最小余额',
+  'transfer.min.info': '\n账户拥有该资产的最低余额。\n',
+  'transfer.fee': '预估手续费',
 };

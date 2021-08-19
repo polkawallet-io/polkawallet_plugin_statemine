@@ -5,8 +5,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_statemine/common/constants.dart';
+import 'package:polkawallet_plugin_statemine/pages/assetBalancePage.dart';
 import 'package:polkawallet_plugin_statemine/pages/assetDetailPage.dart';
 import 'package:polkawallet_plugin_statemine/pages/assetsList.dart';
+import 'package:polkawallet_plugin_statemine/pages/transferPage.dart';
 import 'package:polkawallet_plugin_statemine/service/index.dart';
 import 'package:polkawallet_plugin_statemine/store/cache/storeCache.dart';
 import 'package:polkawallet_plugin_statemine/store/index.dart';
@@ -35,7 +37,7 @@ class PluginStatemine extends PolkawalletPlugin {
               'packages/polkawallet_plugin_statemine/assets/images/statemine.png'),
           iconDisabled: Image.asset(
               'packages/polkawallet_plugin_statemine/assets/images/statemine_grey.png'),
-          jsCodeVersion: 21401,
+          jsCodeVersion: 22201,
           isTestNet: false,
           isXCMSupport: true,
         ),
@@ -91,6 +93,8 @@ class PluginStatemine extends PolkawalletPlugin {
 
       // assets pages
       AssetDetailPage.route: (_) => AssetDetailPage(this),
+      AssetBalancePage.route: (_) => AssetBalancePage(this, keyring),
+      TransferPage.route: (_) => TransferPage(this, keyring),
     };
   }
 
@@ -108,6 +112,8 @@ class PluginStatemine extends PolkawalletPlugin {
   Future<void> updateBalances(KeyPairData acc) async {
     super.updateBalances(acc);
 
+    await service.assets.getAllAssets();
+
     final all = store.assets.assetsAll.toList();
     final res = await sdk.api.assets
         .queryAssetsBalances(all.map((e) => e.id).toList(), acc.address);
@@ -115,6 +121,7 @@ class PluginStatemine extends PolkawalletPlugin {
         .asMap()
         .map((k, v) {
           v.amount = res[k].balance;
+          v.detailPageRoute = AssetBalancePage.route;
           return MapEntry(k, v);
         })
         .values
@@ -154,6 +161,8 @@ class PluginStatemine extends PolkawalletPlugin {
   @override
   Future<void> onAccountChanged(KeyPairData acc) async {
     _store.assets.loadCache(acc.pubKey);
+
+    updateBalances(acc);
   }
 
   List _randomList(List input) {
