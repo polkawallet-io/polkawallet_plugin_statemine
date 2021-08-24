@@ -39,6 +39,7 @@ class _AssetsListState extends State<AssetsList> {
             Container(
               margin: EdgeInsets.all(16),
               child: CupertinoTextField(
+                autofocus: false,
                 padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(24)),

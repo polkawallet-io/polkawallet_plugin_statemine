@@ -40,6 +40,7 @@ class PluginStatemine extends PolkawalletPlugin {
           jsCodeVersion: 22201,
           isTestNet: false,
           isXCMSupport: true,
+          parachainId: '1000',
         ),
         recoveryEnabled = false,
         _cache =
