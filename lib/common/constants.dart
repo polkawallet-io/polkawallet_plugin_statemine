@@ -9,11 +9,6 @@ const network_name_statemint = 'statemint';
 const plugin_node_list = {
   network_name_statemine: [
     {
-      'name': 'Statemine (hosted by PatractLabs)',
-      'ss58': 2,
-      'endpoint': 'wss://statemine.kusama.elara.patract.io',
-    },
-    {
       'name': 'Statemine (hosted by Parity)',
       'ss58': 2,
       'endpoint': 'wss://kusama-statemine-rpc.paritytech.net',
