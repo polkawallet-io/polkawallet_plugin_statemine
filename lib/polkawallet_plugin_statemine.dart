@@ -69,7 +69,7 @@ class PluginStatemine extends PolkawalletPlugin {
 
   @override
   List<TokenBalanceData> get noneNativeTokensAll {
-    return store?.assets?.assetsAll?.toList();
+    return store?.assets?.tokenBalanceMap?.values?.toList();
   }
 
   @override
@@ -116,6 +116,8 @@ class PluginStatemine extends PolkawalletPlugin {
     await service.assets.getAllAssets();
 
     final all = store.assets.assetsAll.toList();
+    all.removeWhere(
+        (element) => element.symbol == (networkState.tokenSymbol ?? [''])[0]);
     final res = await sdk.api.assets
         .queryAssetsBalances(all.map((e) => e.id).toList(), acc.address);
     final assetsBalances = all
