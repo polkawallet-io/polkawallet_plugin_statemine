@@ -7,6 +7,7 @@ const relay_chain_kusama = 'kusama';
 const relay_chain_polkadot = 'polkadot';
 const network_name_statemine = 'statemine';
 const network_name_statemint = 'statemint';
+const network_name_westmint = 'westmint';
 const network_name_karura = 'karura';
 
 const plugin_node_list = {
@@ -37,6 +38,7 @@ const plugin_ss58_format = {
   relay_chain_polkadot: 0,
   network_name_statemine: 2,
   network_name_statemint: 0,
+  network_name_westmint: 42,
   network_name_karura: 8,
 };
 
