@@ -8,6 +8,7 @@ import 'package:polkawallet_sdk/plugin/store/balances.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/roundedButton.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/pages/accountQrCodePage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 
@@ -31,6 +32,9 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
 
   Future<void> _updateData() async {
     widget.plugin.updateBalances(widget.keyring.current);
+
+    final TokenBalanceData asset = ModalRoute.of(context).settings.arguments;
+    widget.plugin.service.assets.queryMarketPrices([asset.symbol]);
   }
 
   @override
@@ -61,6 +65,7 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
         title: Text(token.symbol),
         centerTitle: true,
         elevation: 0.0,
+        leading: BackBtn(),
       ),
       body: SafeArea(
         child: Observer(
@@ -68,6 +73,12 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
             final balance =
                 widget.plugin.store.assets.tokenBalanceMap[token.id];
             final free = Fmt.balanceInt(balance?.amount ?? '0');
+
+            final tokenPrice =
+                widget.plugin.store.assets.marketPrices[token.symbol];
+            final tokenValue = (tokenPrice ?? 0) > 0
+                ? tokenPrice * Fmt.bigIntToDouble(free, balance.decimals)
+                : 0;
             return RefreshIndicator(
               key: _refreshKey,
               onRefresh: _updateData,
@@ -97,6 +108,19 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                                   ),
                                 ),
                               ),
+                              Visibility(
+                                  visible: tokenValue > 0,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(bottom: 16),
+                                    child: Text(
+                                      tokenValue > 0
+                                          ? '≈ \$ ${Fmt.priceFloor(tokenValue as double)}'
+                                          : "",
+                                      style: TextStyle(
+                                        color: Theme.of(context).cardColor,
+                                      ),
+                                    ),
+                                  )),
                             ],
                           ),
                         ),
@@ -112,6 +136,10 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                       ),
                     ],
                   ),
+                  Expanded(
+                      child: Container(
+                    color: Theme.of(context).cardColor,
+                  )),
                   Container(
                     color: titleColor,
                     child: Row(

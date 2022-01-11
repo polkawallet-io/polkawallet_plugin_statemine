@@ -78,6 +78,7 @@ class _AssetsListState extends State<AssetsList> {
                     );
                   }
                   return ListTile(
+                    dense: true,
                     leading: TokenIcon(
                       list[i].id,
                       widget.plugin.tokenIcons,

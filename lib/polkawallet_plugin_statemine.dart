@@ -63,8 +63,8 @@ class PluginStatemine extends PolkawalletPlugin {
   final Map<String, Widget> tokenIcons = {
     'KSM': Image.asset(
         'packages/polkawallet_plugin_statemine/assets/images/tokens/KSM.png'),
-    'DOT': Image.asset(
-        'packages/polkawallet_plugin_statemine/assets/images/tokens/DOT.png'),
+    '8': Image.asset(
+        'packages/polkawallet_plugin_statemine/assets/images/tokens/RMRK.png'),
   };
 
   @override
@@ -131,8 +131,12 @@ class PluginStatemine extends PolkawalletPlugin {
         .toList();
     store.assets.setTokenBalanceMap(assetsBalances, acc.pubKey);
 
-    assetsBalances.retainWhere((e) => Fmt.balanceInt(e.amount) > BigInt.zero);
+    assetsBalances.retainWhere(
+        (e) => Fmt.balanceInt(e.amount) > BigInt.zero || e.symbol == 'RMRK');
     balances.setTokens(assetsBalances);
+
+    Future.wait(
+        assetsBalances.map((e) => service.assets.getAssetsDetail(e.id)));
   }
 
   @override
@@ -158,11 +162,15 @@ class PluginStatemine extends PolkawalletPlugin {
   Future<void> onStarted(Keyring keyring) async {
     await _service.assets.getAllAssets();
 
+    _service.assets.getTokensConfig();
+
     updateBalances(keyring.current);
   }
 
   @override
   Future<void> onAccountChanged(KeyPairData acc) async {
+    balances.setTokens([]);
+
     _store.assets.loadCache(acc.pubKey);
 
     updateBalances(acc);

@@ -1,4 +1,5 @@
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
+import 'package:polkawallet_plugin_statemine/service/walletApi.dart';
 import 'package:polkawallet_plugin_statemine/store/index.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 
@@ -29,5 +30,27 @@ class ServiceAssets {
       ];
       plugin.service.account.updateIconsAndIndices(addresses.toSet().toList());
     }
+  }
+
+  Future<void> getTokensConfig() async {
+    final res = await WalletApi.getTokensConfig();
+    if (res != null) {
+      store.assets.setTokensConfig(res);
+    }
+  }
+
+  Future<void> queryMarketPrices(List<String> tokens) async {
+    if (tokens.length == 0) return;
+
+    final List res = await Future.wait(
+        tokens.map((e) => WalletApi.getTokenPrice(e)).toList());
+    final Map<String, double> prices = {};
+    res.asMap().forEach((k, e) {
+      if (e != null && e['data'] != null) {
+        prices[tokens[k]] = double.parse(e['data']['price'][0].toString());
+      }
+    });
+
+    store.assets.setMarketPrices(prices);
   }
 }

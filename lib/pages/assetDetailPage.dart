@@ -8,6 +8,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/addressIcon.dart';
 import 'package:polkawallet_ui/components/infoItemRow.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
+import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/utils/format.dart';
 import 'package:polkawallet_ui/utils/index.dart';
 
@@ -61,7 +62,10 @@ class _AssetDetailPageState extends State<AssetDetailPage> {
     final TokenBalanceData asset = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-          title: Text('${dic['assets']} #${asset.id}'), centerTitle: true),
+        title: Text('${dic['assets']} #${asset.id}'),
+        centerTitle: true,
+        leading: BackBtn(),
+      ),
       body: SafeArea(
         child: Observer(
           builder: (_) {
@@ -83,12 +87,18 @@ class _AssetDetailPageState extends State<AssetDetailPage> {
                                 Divider(),
                                 InfoItemRow(
                                     dic['asset.supply'],
-                                    Fmt.balance(detail['supply'].toString(),
-                                        asset.decimals)),
+                                    Fmt.priceFloorBigInt(
+                                        Fmt.balanceInt(
+                                            detail['supply'].toString()),
+                                        asset.decimals,
+                                        lengthMax: 8)),
                                 InfoItemRow(
                                     dic['asset.minBalance'],
-                                    Fmt.balance(detail['minBalance'].toString(),
-                                        asset.decimals))
+                                    Fmt.priceFloorBigInt(
+                                        Fmt.balanceInt(
+                                            detail['minBalance'].toString()),
+                                        asset.decimals,
+                                        lengthMax: 8))
                               ],
                             )
                           : Container(),
