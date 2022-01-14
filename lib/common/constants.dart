@@ -54,8 +54,8 @@ const relay_chain_token_symbol = 'KSM';
 const cross_chain_xcm_fees = {
   network_name_karura: {
     'RMRK': {
-      'fee': '640000',
-      'existentialDeposit': '10000000',
+      'fee': '6400000',
+      'existentialDeposit': '100000000',
     }
   }
 };
