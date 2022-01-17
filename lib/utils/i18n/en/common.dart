@@ -1,5 +1,6 @@
 const Map<String, String> enCommon = {
   'assets': 'Assets',
+  'assets.brief': 'Tokens issued on the Statemine network.',
   'assets.filter': 'Filter by name/symbol/ID',
   'transfer': 'Transfer',
   'receive': 'Receive',
@@ -57,4 +58,8 @@ const Map<String, String> enCommon = {
   'cross.warn.info':
       'Editing cross-chain destination address is not recommended.\nAdvanced users only.',
   'warn.fee': 'The transaction may fail due to insufficient KSM balance.',
+  'upgrading': 'Upgrading',
+  'upgrading.context':
+      'The function of this module is temporarily unavailable for network runtime upgrading.',
+  'upgrading.btn': 'Got it',
 };

@@ -7,7 +7,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:polkawallet_plugin_statemine/common/constants.dart';
 import 'package:polkawallet_plugin_statemine/pages/assetBalancePage.dart';
 import 'package:polkawallet_plugin_statemine/pages/assetDetailPage.dart';
-import 'package:polkawallet_plugin_statemine/pages/assetsList.dart';
+import 'package:polkawallet_plugin_statemine/pages/assetsListPage.dart';
+import 'package:polkawallet_plugin_statemine/pages/defi/karuraEntryPage.dart';
+import 'package:polkawallet_plugin_statemine/pages/metaHub.dart';
 import 'package:polkawallet_plugin_statemine/pages/transferPage.dart';
 import 'package:polkawallet_plugin_statemine/service/index.dart';
 import 'package:polkawallet_plugin_statemine/store/cache/storeCache.dart';
@@ -76,13 +78,12 @@ class PluginStatemine extends PolkawalletPlugin {
   List<HomeNavItem> getNavItems(BuildContext context, Keyring keyring) {
     return [
       HomeNavItem(
-        text: basic.name[0].toUpperCase() + basic.name.substring(1),
-        icon: Image.asset(
-            'packages/polkawallet_plugin_statemine/assets/images/statemine_grey.png'),
-        iconActive: Image.asset(
-            'packages/polkawallet_plugin_statemine/assets/images/statemine.png'),
-        content: AssetsList(this),
-      )
+        text: basic.name.toUpperCase(),
+        icon: Container(),
+        iconActive: Container(),
+        isAdapter: true,
+        content: MetaHubPanel(this),
+      ),
     ];
   }
 
@@ -93,9 +94,13 @@ class PluginStatemine extends PolkawalletPlugin {
           TxConfirmPage(this, keyring, _service.getPassword),
 
       // assets pages
+      AssetsListPage.route: (_) => AssetsListPage(this),
       AssetDetailPage.route: (_) => AssetDetailPage(this),
       AssetBalancePage.route: (_) => AssetBalancePage(this, keyring),
       TransferPage.route: (_) => TransferPage(this, keyring),
+
+      // defi entry
+      KaruraEntryPage.route: (_) => KaruraEntryPage(this),
     };
   }
 
@@ -156,6 +161,8 @@ class PluginStatemine extends PolkawalletPlugin {
     }
 
     _service = PluginService(this, keyring);
+
+    _service.fetchLiveModules();
   }
 
   @override

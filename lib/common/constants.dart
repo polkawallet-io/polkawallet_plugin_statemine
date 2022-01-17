@@ -22,6 +22,11 @@ const plugin_node_list = {
       'ss58': 2,
       'endpoint': 'wss://statemine.api.onfinality.io/public-ws',
     },
+    // {
+    //   'name': 'Westmint (hosted by Parity)',
+    //   'ss58': 42,
+    //   'endpoint': 'wss://westmint-rpc.polkadot.io',
+    // },
   ],
   network_name_statemint: [],
 };
@@ -51,13 +56,27 @@ const xcm_dest_weight_karura = '600000000';
 const xcm_dest_weight_v2 = '5000000000';
 
 const relay_chain_token_symbol = 'KSM';
+const foreign_token_symbol_RMRK = 'RMRK';
 const cross_chain_xcm_fees = {
   network_name_karura: {
-    'RMRK': {
+    foreign_token_symbol_RMRK: {
       'fee': '6400000',
       'existentialDeposit': '100000000',
     }
   }
+};
+
+const module_name_assets = 'assets';
+const module_name_defi = 'defi';
+const config_modules = {
+  module_name_assets: {
+    'visible': true,
+    'enabled': true,
+  },
+  module_name_defi: {
+    'visible': false,
+    'enabled': true,
+  },
 };
 
 const plugin_primary_color = {

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:polkawallet_plugin_statemine/common/constants.dart';
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
 import 'package:polkawallet_plugin_statemine/service/serviceAccount.dart';
 import 'package:polkawallet_plugin_statemine/service/serviceAssets.dart';
+import 'package:polkawallet_plugin_statemine/service/walletApi.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
@@ -34,5 +36,14 @@ class PluginService {
       },
     );
     return password;
+  }
+
+  Future<void> fetchLiveModules() async {
+    final res = await WalletApi.getLiveModules();
+    if (res != null) {
+      plugin.store.settings.setLiveModules(res);
+    } else {
+      plugin.store.settings.setLiveModules(config_modules);
+    }
   }
 }

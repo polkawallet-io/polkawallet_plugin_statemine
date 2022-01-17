@@ -1,5 +1,6 @@
 const Map<String, String> zhCommon = {
   'assets': '资产',
+  'assets.brief': 'Statemine 网络上发行的 Token.',
   'assets.filter': '查询名称/简称/ID',
   'transfer': '转账',
   'receive': '收款',
@@ -53,4 +54,7 @@ const Map<String, String> zhCommon = {
   'cross.edit': '修改收款地址',
   'cross.warn.info': '不建议修改跨链转账的收款地址。\n该功能仅限高级用户使用。',
   'warn.fee': '因 KSM 余额不足，交易可能会执行失败。',
+  'upgrading': '功能升级',
+  'upgrading.context': '该模块功能正在升级中，暂时无法使用。',
+  'upgrading.btn': '我知道了',
 };

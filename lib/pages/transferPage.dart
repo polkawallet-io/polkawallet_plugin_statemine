@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_plugin_statemine/common/components/insufficientFeeWarn.dart';
 import 'package:polkawallet_plugin_statemine/common/constants.dart';
+import 'package:polkawallet_plugin_statemine/pages/defi/karuraEntryPage.dart';
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
 import 'package:polkawallet_plugin_statemine/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/api/types/txInfoData.dart';
@@ -23,6 +24,7 @@ import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/addressTextFormField.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/components/v3/index.dart' as v3;
+import 'package:polkawallet_ui/components/v3/infoItemRow.dart';
 import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/components/v3/txButton.dart';
 import 'package:polkawallet_ui/pages/scanPage.dart';
@@ -401,6 +403,61 @@ class _TransferPageState extends State<TransferPage> {
     return null;
   }
 
+  Future<void> _goToDeFi() async {
+    return showCupertinoDialog(
+      context: context,
+      builder: (_) {
+        final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
+        final dicDeFi =
+            I18n.of(context).getDic(i18n_full_dic_statemine, 'defi');
+        final crossChainIcons = cross_chain_icons
+            .map((k, v) => MapEntry(k.toUpperCase(), Image.asset(v)));
+        return CupertinoAlertDialog(
+          title: Text(dicDeFi['xcm.tip.title']),
+          content: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 16, bottom: 16),
+                child: Text(dicDeFi['xcm.tip.content']),
+              ),
+              InfoItemRow(dic['address'], Fmt.address(_accountTo.address)),
+              InfoItemRow(
+                  dic['amount'], '${_amountCtrl.text.trim()} ${_token.symbol}'),
+              Row(
+                children: [
+                  Expanded(
+                      child: Text(
+                    dic['cross.chain'],
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.headline5,
+                  )),
+                  TokenIcon(_chainTo, crossChainIcons, small: true),
+                  Container(
+                    margin: EdgeInsets.only(left: 8),
+                    child: Text(
+                      _chainTo.toUpperCase(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            CupertinoButton(
+                child: Text(dic['ok']),
+                onPressed: () {
+                  Navigator.of(context).popAndPushNamed(KaruraEntryPage.route);
+                })
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -459,7 +516,6 @@ class _TransferPageState extends State<TransferPage> {
         final existDeposit = Fmt.balanceInt(widget
             .plugin.store.assets.assetsDetails[token.id]['minBalance']
             .toString());
-        print(widget.plugin.store.assets.assetsDetails[token.id]);
 
         final chainTo = _chainTo ?? widget.plugin.basic.name;
         final isCrossChain = widget.plugin.basic.name != chainTo;
@@ -808,9 +864,19 @@ class _TransferPageState extends State<TransferPage> {
                   child: TxButton(
                     text: dic['make'],
                     getTxParams: () => _getTxParams(chainTo),
-                    onFinish: (res) {
+                    onFinish: (res) async {
                       if (res != null) {
-                        Navigator.of(context).pop(res);
+                        // jump to karura defi page if enabled
+                        final defiConfig =
+                            widget.plugin.store.settings.liveModules['defi'];
+                        if (_token.symbol == foreign_token_symbol_RMRK &&
+                            isCrossChain &&
+                            defiConfig != null &&
+                            (defiConfig['enabled'] ?? false)) {
+                          await _goToDeFi();
+                        } else {
+                          Navigator.of(context).pop(res);
+                        }
                       }
                     },
                   ),
