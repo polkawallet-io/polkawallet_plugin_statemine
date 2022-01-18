@@ -431,7 +431,7 @@ class _TransferPageState extends State<TransferPage> {
                     textAlign: TextAlign.left,
                     style: Theme.of(context).textTheme.headline5,
                   )),
-                  TokenIcon(_chainTo, crossChainIcons, small: true),
+                  TokenIcon(_chainTo, crossChainIcons, size: 24),
                   Container(
                     margin: EdgeInsets.only(left: 8),
                     child: Text(
