@@ -10,6 +10,7 @@ import 'package:polkawallet_plugin_statemine/pages/assetDetailPage.dart';
 import 'package:polkawallet_plugin_statemine/pages/assetsListPage.dart';
 import 'package:polkawallet_plugin_statemine/pages/defi/karuraEntryPage.dart';
 import 'package:polkawallet_plugin_statemine/pages/metaHub.dart';
+import 'package:polkawallet_plugin_statemine/pages/public/bannerRMRKPage.dart';
 import 'package:polkawallet_plugin_statemine/pages/transferPage.dart';
 import 'package:polkawallet_plugin_statemine/service/index.dart';
 import 'package:polkawallet_plugin_statemine/store/cache/storeCache.dart';
@@ -98,6 +99,9 @@ class PluginStatemine extends PolkawalletPlugin {
       AssetDetailPage.route: (_) => AssetDetailPage(this),
       AssetBalancePage.route: (_) => AssetBalancePage(this, keyring),
       TransferPage.route: (_) => TransferPage(this, keyring),
+
+      // banners
+      BannerRMRKPage.route: (_) => BannerRMRKPage(this),
 
       // defi entry
       KaruraEntryPage.route: (_) => KaruraEntryPage(this),

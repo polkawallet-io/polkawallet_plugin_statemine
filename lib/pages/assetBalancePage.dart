@@ -174,7 +174,10 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                                 final res = await Navigator.pushNamed(
                                   context,
                                   TransferPage.route,
-                                  arguments: token,
+                                  arguments: {
+                                    'tokenId': token.id,
+                                    'network': widget.plugin.basic.name
+                                  },
                                 );
                                 if (res != null) {
                                   _refreshKey.currentState.show();

@@ -463,10 +463,10 @@ class _TransferPageState extends State<TransferPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final TokenBalanceData token =
-          ModalRoute.of(context).settings.arguments as TokenBalanceData;
+      final args = ModalRoute.of(context).settings.arguments as Map;
       setState(() {
-        _token = token;
+        _token = widget.plugin.store.assets.tokenBalanceMap[args['tokenId']];
+        _chainTo = args['network'];
         _accountOptions = widget.keyring.allWithContacts.toList();
         _accountTo = widget.keyring.current;
       });
@@ -486,8 +486,9 @@ class _TransferPageState extends State<TransferPage> {
     return Observer(
       builder: (_) {
         final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
-        final TokenBalanceData args = ModalRoute.of(context).settings.arguments;
-        final token = _token ?? args;
+        final args = ModalRoute.of(context).settings.arguments as Map;
+        final token = _token ??
+            widget.plugin.store.assets.tokenBalanceMap[args['tokenId']];
         final tokenSymbol = token.symbol.toUpperCase();
 
         final List tokenXcmConfig =
@@ -535,7 +536,7 @@ class _TransferPageState extends State<TransferPage> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(dic['transfer']),
+            title: Text('${dic['transfer']} $tokenSymbol'),
             centerTitle: true,
             leading: BackBtn(),
             actions: <Widget>[
@@ -689,7 +690,7 @@ class _TransferPageState extends State<TransferPage> {
                             child: GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               child: Container(
-                                margin: EdgeInsets.only(bottom: 4),
+                                margin: EdgeInsets.only(bottom: 4, top: 8),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[

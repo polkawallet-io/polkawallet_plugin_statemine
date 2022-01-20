@@ -13,4 +13,7 @@ const Map<String, String> enDefi = {
   'xcm.tip.title': 'Congrats!',
   'xcm.tip.content':
       'Cross-chain transfer completed.\nNow start your adventure of DeFi Hub!',
+  'fast.title': 'Fast Entry',
+  'fast.transfer': 'Cross Chain Transfer (RMRK)',
+  'fast.defi': 'Go to DeFi',
 };
