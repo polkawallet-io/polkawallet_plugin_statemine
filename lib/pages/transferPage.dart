@@ -514,9 +514,10 @@ class _TransferPageState extends State<TransferPage> {
         final nativeToken = widget.plugin.networkState.tokenSymbol[0];
         final nativeTokenDecimals = widget.plugin.networkState.tokenDecimals[
             widget.plugin.networkState.tokenSymbol.indexOf(nativeToken)];
-        final existDeposit = Fmt.balanceInt(widget
-            .plugin.store.assets.assetsDetails[token.id]['minBalance']
-            .toString());
+        final assetDetail = widget.plugin.store.assets.assetsDetails[token.id];
+        final existDeposit = assetDetail != null
+            ? Fmt.balanceInt(assetDetail['minBalance'].toString())
+            : BigInt.zero;
 
         final chainTo = _chainTo ?? widget.plugin.basic.name;
         final isCrossChain = widget.plugin.basic.name != chainTo;
@@ -869,11 +870,12 @@ class _TransferPageState extends State<TransferPage> {
                       if (res != null) {
                         // jump to karura defi page if enabled
                         final defiConfig =
-                            widget.plugin.store.settings.liveModules['defi'];
+                            widget.plugin.store.settings.liveModules['defi'] ??
+                                {};
                         if (_token.symbol == foreign_token_symbol_RMRK &&
                             isCrossChain &&
-                            defiConfig != null &&
-                            (defiConfig['enabled'] ?? false)) {
+                            defiConfig['visible'] == true &&
+                            defiConfig['enabled'] == true) {
                           await _goToDeFi();
                         } else {
                           Navigator.of(context).pop(res);

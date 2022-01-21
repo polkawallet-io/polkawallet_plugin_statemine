@@ -9,8 +9,8 @@ class WalletApi {
   static Future<Map> getLiveModules() async {
     try {
       Response res =
-          // await get(Uri.parse('$_configEndpoint/config/statemineModules.json'));
-          await get(Uri.parse('$_endpoint/config/statemineModules.json'));
+          await get(Uri.parse('$_configEndpoint/config/statemineModules.json'));
+      // await get(Uri.parse('$_endpoint/config/statemineModules.json'));
       if (res == null) {
         return null;
       } else {
@@ -23,8 +23,8 @@ class WalletApi {
   }
 
   static Future<Map> getTokensConfig() async {
-    // final url = '$_configEndpoint/config/statemineTokens.json';
-    final url = '$_endpoint/config/statemineTokens.json';
+    final url = '$_configEndpoint/config/statemineTokens.json';
+    // final url = '$_endpoint/config/statemineTokens.json';
     try {
       Response res = await get(Uri.parse(url));
       if (res == null) {

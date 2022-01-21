@@ -20,14 +20,14 @@ class KaruraEntryPage extends StatelessWidget {
         plugin.appUtils.switchNetwork(
           'karura',
           pageRoute:
-              PageRouteParams('/karura/loan', args: {'loanType': 'LKSM'}),
+              PageRouteParams('/karura/loan', args: {'loanType': 'fa://0'}),
         );
         break;
       case 'swap':
         plugin.appUtils.switchNetwork(
           'karura',
           pageRoute: PageRouteParams('/karura/dex', args: {
-            'swapPair': ['BNC', 'KUSD']
+            'swapPair': ['fa://0', 'KUSD']
           }),
         );
         break;
@@ -35,7 +35,7 @@ class KaruraEntryPage extends StatelessWidget {
         plugin.appUtils.switchNetwork(
           'karura',
           pageRoute: PageRouteParams('/karura/earn/deposit',
-              args: {'poolId': 'lp://KAR/LKSM'}),
+              args: {'poolId': 'lp://KUSD/fa%3A%2F%2F0'}),
         );
         break;
     }
@@ -44,6 +44,10 @@ class KaruraEntryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'defi');
+    final items = ['loan', 'swap', 'earn'];
+    items.retainWhere(
+        (e) => plugin.store.settings.liveModules['defi']['items'][e] == true);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(dic['kar.title']),
@@ -52,25 +56,60 @@ class KaruraEntryPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: ['loan', 'swap', 'earn'].map((e) {
-            return GestureDetector(
-              child: RoundedCard(
-                margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      dic['kar.$e'],
-                      style: Theme.of(context).textTheme.headline1,
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 16, top: 8),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'packages/polkawallet_plugin_statemine/assets/images/tokens/KAR.png',
+                    height: 24,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 6),
+                    child: Text(
+                      'KARURA',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline1
+                          .copyWith(fontSize: 18),
                     ),
-                    Text(dic['kar.$e.brief'])
-                  ],
-                ),
+                  )
+                ],
               ),
-              onTap: () => _goToKar(context, e),
-            );
-          }).toList(),
+            ),
+            ...items.map((e) {
+              return RoundedCard(
+                margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 8),
+                        child: Text(
+                          dic['kar.$e'],
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline1
+                              .copyWith(fontSize: 18),
+                        ),
+                      ),
+                      Image.asset(
+                          'packages/polkawallet_plugin_statemine/assets/images/defi/icon_$e.png',
+                          width: 18)
+                    ],
+                  ),
+                  subtitle: Text(
+                    dic['kar.$e.brief'],
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios, size: 18),
+                  onTap: () => _goToKar(context, e),
+                ),
+              );
+            }).toList()
+          ],
         ),
       ),
     );

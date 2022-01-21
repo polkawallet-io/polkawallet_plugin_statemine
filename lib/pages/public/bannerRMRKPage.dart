@@ -17,6 +17,9 @@ class BannerRMRKPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'defi');
+    final defiConfig = plugin.store.settings.liveModules['defi'] ?? {};
+    final isDeFiEnabled =
+        defiConfig['visible'] == true && defiConfig['enabled'] == true;
     return Scaffold(
       appBar: AppBar(
         title: Text(dic['fast.title']),
@@ -49,15 +52,17 @@ class BannerRMRKPage extends StatelessWidget {
                 ],
               ),
             ),
-            RoundedCard(
-              margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: ListTile(
-                title: Text(dic['fast.defi']),
-                trailing: Icon(Icons.arrow_forward_ios, size: 18),
-                onTap: () =>
-                    Navigator.of(context).pushNamed(KaruraEntryPage.route),
-              ),
-            )
+            Visibility(
+                visible: isDeFiEnabled,
+                child: RoundedCard(
+                  margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: ListTile(
+                    title: Text(dic['fast.defi']),
+                    trailing: Icon(Icons.arrow_forward_ios, size: 18),
+                    onTap: () =>
+                        Navigator.of(context).pushNamed(KaruraEntryPage.route),
+                  ),
+                ))
           ],
         ),
       ),
