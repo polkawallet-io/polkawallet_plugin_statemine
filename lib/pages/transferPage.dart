@@ -344,7 +344,10 @@ class _TransferPageState extends State<TransferPage> {
                 {
                   'ConcreteFungible': {
                     'id': {
-                      'X1': {'GeneralIndex': _token.id}
+                      'X2': [
+                        {'PalletInstance': 50},
+                        {'GeneralIndex': _token.id}
+                      ]
                     },
                     'amount': (_amountMax ??
                             Fmt.tokenInt(
