@@ -26,8 +26,6 @@ abstract class _AssetsStore with Store {
   @observable
   ObservableMap<String, double> marketPrices = ObservableMap();
 
-  Map tokensConfig = {};
-
   @action
   void setTokenBalanceMap(List<TokenBalanceData> list, String pubKey,
       {bool shouldCache = true}) {
@@ -67,10 +65,6 @@ abstract class _AssetsStore with Store {
   @action
   void setAssetsDetails(Map<String, Map> data) {
     assetsDetails.addAll(data);
-  }
-
-  void setTokensConfig(Map data) {
-    tokensConfig = data;
   }
 
   @action

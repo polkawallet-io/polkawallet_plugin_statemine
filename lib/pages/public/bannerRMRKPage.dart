@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:polkawallet_plugin_statemine/common/constants.dart';
 import 'package:polkawallet_plugin_statemine/pages/defi/karuraEntryPage.dart';
 import 'package:polkawallet_plugin_statemine/pages/transferPage.dart';
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
@@ -17,9 +18,11 @@ class BannerRMRKPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'defi');
-    final defiConfig = plugin.store.settings.liveModules['defi'] ?? {};
+    final modulesConfig =
+        plugin.store.settings.remoteConfig['modules'] ?? config_modules;
+    final deFiConfig = modulesConfig['defi'] ?? {};
     final isDeFiEnabled =
-        defiConfig['visible'] == true && defiConfig['enabled'] == true;
+        deFiConfig['visible'] == true && deFiConfig['enabled'] == true;
     return Scaffold(
       appBar: AppBar(
         title: Text(dic['fast.title']),

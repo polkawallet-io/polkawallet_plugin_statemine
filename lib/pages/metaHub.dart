@@ -22,7 +22,8 @@ class MetaHubPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
     return Observer(builder: (_) {
-      final modulesConfig = plugin.store.settings.liveModules;
+      final modulesConfig =
+          plugin.store.settings.remoteConfig['modules'] ?? config_modules;
       final List liveModules = modulesConfig.keys.toList();
 
       liveModules.retainWhere((e) => modulesConfig[e]['visible']);

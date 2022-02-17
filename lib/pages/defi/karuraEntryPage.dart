@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:polkawallet_plugin_statemine/common/constants.dart';
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
 import 'package:polkawallet_plugin_statemine/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/app.dart';
@@ -44,9 +45,10 @@ class KaruraEntryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'defi');
+    final modulesConfig =
+        plugin.store.settings.remoteConfig['modules'] ?? config_modules;
     final items = ['loan', 'swap', 'earn'];
-    items.retainWhere(
-        (e) => plugin.store.settings.liveModules['defi']['items'][e] == true);
+    items.retainWhere((e) => modulesConfig['defi']['items'][e] == true);
 
     return Scaffold(
       appBar: AppBar(

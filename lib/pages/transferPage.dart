@@ -166,10 +166,10 @@ class _TransferPageState extends State<TransferPage> {
   void _onSelectChain(Map<String, Widget> crossChainIcons) {
     final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
 
+    final tokensConfig =
+        widget.plugin.store.settings.remoteConfig['tokens'] ?? {};
     final List tokenXcmConfig =
-        widget.plugin.store.assets.tokensConfig['xcm'] != null
-            ? widget.plugin.store.assets.tokensConfig['xcm'][_token.id] ?? []
-            : [];
+        tokensConfig['xcm'] != null ? tokensConfig['xcm'][_token.id] ?? [] : [];
     final options = [widget.plugin.basic.name, ...tokenXcmConfig];
 
     showCupertinoModalPopup(
@@ -494,10 +494,10 @@ class _TransferPageState extends State<TransferPage> {
             widget.plugin.store.assets.tokenBalanceMap[args['tokenId']];
         final tokenSymbol = token.symbol.toUpperCase();
 
+        final tokensConfig =
+            widget.plugin.store.settings.remoteConfig['tokens'] ?? {};
         final List tokenXcmConfig =
-            widget.plugin.store.assets.tokensConfig['xcm'] != null
-                ? widget.plugin.store.assets.tokensConfig['xcm'][token.id]
-                : [];
+            tokensConfig['xcm'] != null ? tokensConfig['xcm'][token.id] : [];
         final canCrossChain =
             tokenXcmConfig != null && tokenXcmConfig.length > 0;
 
@@ -872,13 +872,14 @@ class _TransferPageState extends State<TransferPage> {
                     onFinish: (res) async {
                       if (res != null) {
                         // jump to karura defi page if enabled
-                        final defiConfig =
-                            widget.plugin.store.settings.liveModules['defi'] ??
-                                {};
+                        final modulesConfig = widget.plugin.store.settings
+                                .remoteConfig['modules'] ??
+                            config_modules;
+                        final deFiConfig = modulesConfig['defi'] ?? {};
                         if (_token.symbol == foreign_token_symbol_RMRK &&
                             isCrossChain &&
-                            defiConfig['visible'] == true &&
-                            defiConfig['enabled'] == true) {
+                            deFiConfig['visible'] == true &&
+                            deFiConfig['enabled'] == true) {
                           await _goToDeFi();
                         } else {
                           Navigator.of(context).pop(res);

@@ -32,13 +32,6 @@ class ServiceAssets {
     }
   }
 
-  Future<void> getTokensConfig() async {
-    final res = await WalletApi.getTokensConfig();
-    if (res != null) {
-      store.assets.setTokensConfig(res);
-    }
-  }
-
   Future<void> queryMarketPrices(List<String> tokens) async {
     if (tokens.length == 0) return;
 

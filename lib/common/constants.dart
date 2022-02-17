@@ -74,8 +74,9 @@ const config_modules = {
     'enabled': true,
   },
   module_name_defi: {
-    'visible': false,
+    'visible': true,
     'enabled': true,
+    'items': {"loan": false, "swap": true, "earn": true}
   },
 };
 

@@ -166,14 +166,12 @@ class PluginStatemine extends PolkawalletPlugin {
 
     _service = PluginService(this, keyring);
 
-    _service.fetchLiveModules();
+    _service.fetchRemoteConfig();
   }
 
   @override
   Future<void> onStarted(Keyring keyring) async {
     await _service.assets.getAllAssets();
-
-    _service.assets.getTokensConfig();
 
     updateBalances(keyring.current);
   }
