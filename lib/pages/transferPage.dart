@@ -758,7 +758,10 @@ class _TransferPageState extends State<TransferPage> {
                             )),
                         Visibility(
                           visible: isNativeTokenLow,
-                          child: InsufficientFeeWarn(),
+                          child: Container(
+                            margin: EdgeInsets.only(top: 8),
+                            child: InsufficientFeeWarn(),
+                          ),
                         ),
                         Visibility(
                             visible: isCrossChain,
