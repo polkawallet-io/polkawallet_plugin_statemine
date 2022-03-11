@@ -652,9 +652,10 @@ class _TransferPageState extends State<TransferPage> {
                                               .toggleableActiveColor)),
                                   onTap: () {
                                     setState(() {
-                                      _amountMax = available;
+                                      _amountMax = available - existDeposit;
                                       _amountCtrl.text = Fmt.bigIntToDouble(
-                                              available, token.decimals)
+                                              available - existDeposit,
+                                              token.decimals)
                                           .toStringAsFixed(8);
                                     });
                                   },
@@ -681,7 +682,7 @@ class _TransferPageState extends State<TransferPage> {
                                     Fmt.tokenInt(v.trim(), token.decimals);
                                 if (_amountMax == null &&
                                     Fmt.bigIntToDouble(input, token.decimals) >
-                                        available /
+                                        (available - existDeposit) /
                                             BigInt.from(
                                                 pow(10, token.decimals))) {
                                   return dic['amount.low'];

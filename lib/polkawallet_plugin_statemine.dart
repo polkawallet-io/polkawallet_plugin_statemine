@@ -68,6 +68,8 @@ class PluginStatemine extends PolkawalletPlugin {
         'packages/polkawallet_plugin_statemine/assets/images/tokens/KSM.png'),
     '8': Image.asset(
         'packages/polkawallet_plugin_statemine/assets/images/tokens/RMRK.png'),
+    '16': Image.asset(
+        'packages/polkawallet_plugin_statemine/assets/images/tokens/ARIS.png'),
   };
 
   @override
