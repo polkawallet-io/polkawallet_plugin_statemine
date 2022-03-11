@@ -57,13 +57,18 @@ const xcm_dest_weight_v2 = '5000000000';
 
 const relay_chain_token_symbol = 'KSM';
 const foreign_token_symbol_RMRK = 'RMRK';
+const foreign_token_symbol_ARIS = 'ARIS';
 const cross_chain_xcm_fees = {
   network_name_karura: {
     foreign_token_symbol_RMRK: {
       'fee': '6400000',
       'existentialDeposit': '100000000',
+    },
+    foreign_token_symbol_ARIS: {
+      'fee': '6400000',
+      'existentialDeposit': "10000000",
     }
-  }
+  },
 };
 
 const module_name_assets = 'assets';
