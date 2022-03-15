@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
 import 'package:polkawallet_plugin_statemine/service/serviceAccount.dart';
 import 'package:polkawallet_plugin_statemine/service/serviceAssets.dart';
@@ -41,6 +42,19 @@ class PluginService {
     final res = await WalletApi.getRemoteConfig();
     if (res != null) {
       plugin.store.settings.setRemoteConfig(res);
+
+      if ((res['tokens'] ?? {})['icons'] != null) {
+        final icons = Map.of((res['tokens'] ?? {})['icons']);
+        icons.removeWhere(
+            (key, value) => plugin.tokenIcons.keys.toList().indexOf(key) > -1);
+        plugin.tokenIcons.addAll(icons.map((k, v) {
+          return MapEntry(
+              k,
+              (v as String).contains('.svg')
+                  ? SvgPicture.network(v)
+                  : Image.network(v));
+        }));
+      }
     }
   }
 }

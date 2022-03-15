@@ -61,7 +61,7 @@ class _TransferPageState extends State<TransferPage> {
 
   bool _submitting = false;
 
-  Future<String> _checkAccountTo(KeyPairData acc) async {
+  Future<String> _checkAccountTo(KeyPairData acc, int chainToSS58) async {
     if (widget.keyring.allAccounts.indexWhere((e) => e.pubKey == acc.pubKey) >=
         0) {
       return null;
@@ -71,9 +71,8 @@ class _TransferPageState extends State<TransferPage> {
         '(account.checkAddressFormat != undefined ? {}:null)',
         wrapPromise: false);
     if (addressCheckValid != null) {
-      final res = await widget.plugin.sdk.api.account.checkAddressFormat(
-          acc.address,
-          plugin_ss58_format[_chainTo ?? widget.plugin.basic.name]);
+      final res = await widget.plugin.sdk.api.account
+          .checkAddressFormat(acc.address, chainToSS58);
       if (res != null && !res) {
         return I18n.of(context)
             .getDic(i18n_full_dic_ui, 'account')['ss58.mismatch'];
@@ -82,8 +81,8 @@ class _TransferPageState extends State<TransferPage> {
     return null;
   }
 
-  Future<void> _validateAccountTo(KeyPairData acc) async {
-    final error = await _checkAccountTo(acc);
+  Future<void> _validateAccountTo(KeyPairData acc, int chainToSS58) async {
+    final error = await _checkAccountTo(acc, chainToSS58);
     setState(() {
       _accountToError = error;
     });
@@ -106,7 +105,7 @@ class _TransferPageState extends State<TransferPage> {
                   'V0': {
                     'X2': [
                       'Parent',
-                      {'Parachain': para_chain_ids[_chainTo]}
+                      {'Parachain': '1000'}
                     ]
                   }
                 },
@@ -141,7 +140,7 @@ class _TransferPageState extends State<TransferPage> {
     return fee.partialFee.toString();
   }
 
-  Future<void> _onScan() async {
+  Future<void> _onScan(int chainToSS58) async {
     final to = await Navigator.of(context).pushNamed(ScanPage.route);
     if (to == null) return;
     final acc = KeyPairData();
@@ -149,7 +148,7 @@ class _TransferPageState extends State<TransferPage> {
     acc.name = (to as QRCodeResult).address.name;
     final res = await Future.wait([
       widget.plugin.sdk.api.account.getAddressIcons([acc.address]),
-      _checkAccountTo(acc),
+      _checkAccountTo(acc, chainToSS58),
     ]);
     if (res[0] != null) {
       final List icon = res[0] as List<dynamic>;
@@ -169,7 +168,7 @@ class _TransferPageState extends State<TransferPage> {
     final tokensConfig =
         widget.plugin.store.settings.remoteConfig['tokens'] ?? {};
     final List tokenXcmConfig =
-        tokensConfig['xcm'] != null ? tokensConfig['xcm'][_token.id] ?? [] : [];
+        (tokensConfig['xcm'] ?? config_xcm['xcm'])[_token.id] ?? [];
     final options = [widget.plugin.basic.name, ...tokenXcmConfig];
 
     showCupertinoModalPopup(
@@ -199,7 +198,9 @@ class _TransferPageState extends State<TransferPage> {
               if (e != _chainTo) {
                 // set ss58 of _chainTo so we can get according address
                 // from AddressInputField
-                widget.keyring.setSS58(plugin_ss58_format[e]);
+                final chainToSS58 = (tokensConfig['xcmChains'] ??
+                    config_xcm['xcmChains'])[e]['ss58'];
+                widget.keyring.setSS58(chainToSS58);
                 final options = widget.keyring.allWithContacts.toList();
                 widget.keyring.setSS58(widget.plugin.basic.ss58);
                 setState(() {
@@ -211,7 +212,7 @@ class _TransferPageState extends State<TransferPage> {
                   }
                 });
 
-                _validateAccountTo(_accountTo);
+                _validateAccountTo(_accountTo, chainToSS58);
 
                 // update estimated tx fee if switch ToChain
                 _getTxFee(isXCM: e != widget.plugin.basic.name, reload: true);
@@ -261,11 +262,12 @@ class _TransferPageState extends State<TransferPage> {
       _accountToEditable = v;
       if (!v) {
         _accountTo = widget.keyring.current;
+        _accountToError = null;
       }
     });
   }
 
-  Future<TxConfirmParams> _getTxParams(String chainTo) async {
+  Future<TxConfirmParams> _getTxParams(String chainTo, String chainToId) async {
     if (_accountToError == null &&
         _formKey.currentState.validate() &&
         !_submitting) {
@@ -273,8 +275,6 @@ class _TransferPageState extends State<TransferPage> {
 
       /// send XCM tx if cross chain
       if (chainTo != widget.plugin.basic.name) {
-        final isToParent = _chainTo == relay_chain_kusama;
-
         String destPubKey = _accountTo.pubKey;
         // we need to decode address for the pubKey here
         if (destPubKey == null || destPubKey.isEmpty) {
@@ -326,7 +326,7 @@ class _TransferPageState extends State<TransferPage> {
               'V0': {
                 'X2': [
                   'Parent',
-                  {'Parachain': para_chain_ids[_chainTo]}
+                  {'Parachain': chainToId}
                 ]
               }
             },
@@ -406,15 +406,13 @@ class _TransferPageState extends State<TransferPage> {
     return null;
   }
 
-  Future<void> _goToDeFi() async {
+  Future<void> _goToDeFi(Map crossChainIcons) async {
     return showCupertinoDialog(
       context: context,
       builder: (_) {
         final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
         final dicDeFi =
             I18n.of(context).getDic(i18n_full_dic_statemine, 'defi');
-        final crossChainIcons = cross_chain_icons
-            .map((k, v) => MapEntry(k.toUpperCase(), Image.asset(v)));
         return CupertinoAlertDialog(
           title: Text(dicDeFi['xcm.tip.title']),
           content: Column(
@@ -496,8 +494,9 @@ class _TransferPageState extends State<TransferPage> {
 
         final tokensConfig =
             widget.plugin.store.settings.remoteConfig['tokens'] ?? {};
-        final List tokenXcmConfig =
-            tokensConfig['xcm'] != null ? tokensConfig['xcm'][token.id] : [];
+        final List tokenXcmConfig = tokensConfig['xcm'] != null
+            ? tokensConfig['xcm'][token.id]
+            : config_xcm['xcm'][token.id] ?? [];
         final canCrossChain =
             tokenXcmConfig != null && tokenXcmConfig.length > 0;
 
@@ -524,17 +523,30 @@ class _TransferPageState extends State<TransferPage> {
 
         final chainTo = _chainTo ?? widget.plugin.basic.name;
         final isCrossChain = widget.plugin.basic.name != chainTo;
+        final tokenXcmInfo = tokensConfig['xcmInfo'] != null
+            ? tokensConfig['xcmInfo'][chainTo]
+            : config_xcm['xcmInfo'][chainTo] ?? {};
         final destExistDeposit = isCrossChain
-            ? Fmt.balanceInt(cross_chain_xcm_fees[chainTo][tokenSymbol]
-                ['existentialDeposit'])
+            ? Fmt.balanceInt(tokenXcmInfo[tokenSymbol]['existentialDeposit'])
             : BigInt.zero;
         final destFee = isCrossChain
-            ? Fmt.balanceInt(cross_chain_xcm_fees[chainTo][tokenSymbol]['fee'])
+            ? Fmt.balanceInt(tokenXcmInfo[tokenSymbol]['fee'])
             : BigInt.zero;
 
         final colorGrey = Theme.of(context).unselectedWidgetColor;
-        final crossChainIcons = cross_chain_icons
-            .map((k, v) => MapEntry(k.toUpperCase(), Image.asset(v)));
+        final crossChainIcons = Map<String, Widget>.from(
+            tokensConfig['xcmChains'] != null
+                ? tokensConfig['xcmChains'].map((k, v) => MapEntry(
+                    k.toUpperCase(),
+                    (v['icon'] as String).contains('.svg')
+                        ? SvgPicture.network(v['icon'])
+                        : Image.network(v['icon'])))
+                : config_xcm['xcmChains']
+                    .map((k, v) => MapEntry(k.toUpperCase(), Image.asset(v))));
+        final chainToId = (tokensConfig['xcmChains'] ??
+            config_xcm['xcmChains'])[chainTo]['id'];
+        final chainToSS58 = (tokensConfig['xcmChains'] ??
+            config_xcm['xcmChains'])[chainTo]['ss58'];
 
         final labelStyle = Theme.of(context).textTheme.headline4;
 
@@ -553,7 +565,7 @@ class _TransferPageState extends State<TransferPage> {
                       color: Theme.of(context).cardColor,
                       width: 18,
                     ),
-                    onPressed: _onScan,
+                    onPressed: () => _onScan(chainToSS58),
                     isBlueBg: true),
               )
             ],
@@ -588,7 +600,8 @@ class _TransferPageState extends State<TransferPage> {
                             hintText: dic['address'],
                             initialValue: _accountTo,
                             onChanged: (KeyPairData acc) async {
-                              final error = await _checkAccountTo(acc);
+                              final error =
+                                  await _checkAccountTo(acc, chainToSS58);
                               setState(() {
                                 _accountTo = acc;
                                 _accountToError = error;
@@ -872,7 +885,7 @@ class _TransferPageState extends State<TransferPage> {
                   padding: EdgeInsets.fromLTRB(16.w, 4.h, 14.w, 16.h),
                   child: TxButton(
                     text: dic['make'],
-                    getTxParams: () => _getTxParams(chainTo),
+                    getTxParams: () => _getTxParams(chainTo, chainToId),
                     onFinish: (res) async {
                       if (res != null) {
                         // jump to karura defi page if enabled
@@ -884,7 +897,7 @@ class _TransferPageState extends State<TransferPage> {
                             isCrossChain &&
                             deFiConfig['visible'] == true &&
                             deFiConfig['enabled'] == true) {
-                          await _goToDeFi();
+                          await _goToDeFi(crossChainIcons);
                         } else {
                           Navigator.of(context).pop(res);
                         }

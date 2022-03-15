@@ -63,7 +63,7 @@ class PluginStatemine extends PolkawalletPlugin {
   }
 
   @override
-  final Map<String, Widget> tokenIcons = {
+  Map<String, Widget> tokenIcons = {
     'KSM': Image.asset(
         'packages/polkawallet_plugin_statemine/assets/images/tokens/KSM.png'),
     '8': Image.asset(

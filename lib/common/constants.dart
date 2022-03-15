@@ -47,28 +47,43 @@ const plugin_ss58_format = {
   network_name_karura: 8,
 };
 
-const para_chain_ids = {
-  network_name_karura: 2000,
-};
-
 const xcm_dest_weight_kusama = '3000000000';
 const xcm_dest_weight_karura = '600000000';
 const xcm_dest_weight_v2 = '5000000000';
 
+const image_assets_uri = 'packages/polkawallet_plugin_statemine/assets/images';
 const relay_chain_token_symbol = 'KSM';
 const foreign_token_symbol_RMRK = 'RMRK';
 const foreign_token_symbol_ARIS = 'ARIS';
-const cross_chain_xcm_fees = {
-  network_name_karura: {
-    foreign_token_symbol_RMRK: {
-      'fee': '6400000',
-      'existentialDeposit': '100000000',
-    },
-    foreign_token_symbol_ARIS: {
-      'fee': '6400000',
-      'existentialDeposit': "10000000",
-    }
+const config_xcm = {
+  'xcm': {
+    '8': [network_name_karura],
+    '16': [network_name_karura],
   },
+  'xcmInfo': {
+    network_name_karura: {
+      foreign_token_symbol_RMRK: {
+        'fee': '6400000',
+        'existentialDeposit': '100000000',
+      },
+      foreign_token_symbol_ARIS: {
+        'fee': '6400000',
+        'existentialDeposit': "10000000",
+      }
+    },
+  },
+  'xcmChains': {
+    network_name_statemine: {
+      'id': '1000',
+      'ss58': 2,
+      'icon': '$image_assets_uri/statemine.png',
+    },
+    network_name_karura: {
+      'id': '2000',
+      'ss58': 8,
+      'icon': '$image_assets_uri/tokens/KAR.png',
+    }
+  }
 };
 
 const module_name_assets = 'assets';
@@ -98,11 +113,4 @@ const plugin_gradient_color = {
 const plugin_cache_key = {
   network_name_statemine: 'plugin_statemine',
   network_name_statemint: 'plugin_statemint',
-};
-
-const image_assets_uri = 'packages/polkawallet_plugin_statemine/assets/images';
-const cross_chain_icons = {
-  network_name_karura: '$image_assets_uri/tokens/KAR.png',
-  network_name_statemine: '$image_assets_uri/statemine.png',
-  relay_chain_kusama: '$image_assets_uri/tokens/KSM.png',
 };
