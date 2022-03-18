@@ -73,16 +73,8 @@ const config_xcm = {
     },
   },
   'xcmChains': {
-    network_name_statemine: {
-      'id': '1000',
-      'ss58': 2,
-      'icon': '$image_assets_uri/statemine.png',
-    },
-    network_name_karura: {
-      'id': '2000',
-      'ss58': 8,
-      'icon': '$image_assets_uri/tokens/KAR.png',
-    }
+    network_name_statemine: {'id': '1000', 'ss58': 2},
+    network_name_karura: {'id': '2000', 'ss58': 8}
   }
 };
 

@@ -46,4 +46,11 @@ class ServiceAssets {
 
     store.assets.setMarketPrices(prices);
   }
+
+  Future<void> queryIconsSrc() async {
+    final data = await WalletApi.getCrossChainIcons();
+    if (data != null) {
+      store.assets.crossChainIcons = data;
+    }
+  }
 }

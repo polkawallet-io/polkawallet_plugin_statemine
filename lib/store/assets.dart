@@ -26,6 +26,8 @@ abstract class _AssetsStore with Store {
   @observable
   ObservableMap<String, double> marketPrices = ObservableMap();
 
+  Map crossChainIcons = {};
+
   @action
   void setTokenBalanceMap(List<TokenBalanceData> list, String pubKey,
       {bool shouldCache = true}) {

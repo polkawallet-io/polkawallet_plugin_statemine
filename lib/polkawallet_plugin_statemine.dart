@@ -169,6 +169,7 @@ class PluginStatemine extends PolkawalletPlugin {
     _service = PluginService(this, keyring);
 
     _service.fetchRemoteConfig();
+    _service.assets.queryIconsSrc();
   }
 
   @override
