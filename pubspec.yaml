@@ -1,6 +1,6 @@
 name: polkawallet_plugin_statemine
 description: A statemine/statemint network plugin for polkawallet.
-version: 0.3.0
+version: 0.4.4
 homepage:
 
 environment:
@@ -15,11 +15,9 @@ dependencies:
   flutter_svg: ^0.23.0+1
   get_storage: ^2.0.2
   json_annotation: ^4.0.1
-#  polkawallet_sdk: ^0.4.0
+#  polkawallet_sdk: ^0.4.4
+#  polkawallet_ui: ^0.4.1
   polkawallet_ui:
-#    git:
-#      url: https://github.com/polkawallet-io/ui.git
-#      ref: 485a9cde97f2446d74a1aeb6d8d63e33683461a5
     path: ../ui
   polkawallet_sdk:
     path: ../sdk
