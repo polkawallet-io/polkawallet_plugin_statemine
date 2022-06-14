@@ -617,7 +617,9 @@ class _TransferPageState extends State<TransferPage> {
                                     margin: EdgeInsets.only(top: 4),
                                     child: Text(_accountToError ?? "",
                                         style: TextStyle(
-                                            fontSize: 12, color: Colors.red)),
+                                            fontSize:
+                                                UI.getTextSize(12, context),
+                                            color: Colors.red)),
                                   )),
                               Visibility(
                                 visible: isCrossChain,
@@ -635,7 +637,9 @@ class _TransferPageState extends State<TransferPage> {
                                           padding: EdgeInsets.only(top: 8),
                                           child: Text(
                                             dic['cross.edit'],
-                                            style: TextStyle(fontSize: 14),
+                                            style: TextStyle(
+                                                fontSize: UI.getTextSize(
+                                                    14, context)),
                                           ),
                                         ),
                                       ],

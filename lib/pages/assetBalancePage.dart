@@ -11,6 +11,7 @@ import 'package:polkawallet_ui/components/roundedButton.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/pages/accountQrCodePage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class AssetBalancePage extends StatefulWidget {
   AssetBalancePage(this.plugin, this.keyring);
@@ -103,7 +104,7 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                                   Fmt.token(free, token.decimals, length: 8),
                                   style: TextStyle(
                                     color: titleColor,
-                                    fontSize: 28,
+                                    fontSize: UI.getTextSize(28, context),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

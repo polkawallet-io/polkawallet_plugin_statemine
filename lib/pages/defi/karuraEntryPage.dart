@@ -7,6 +7,7 @@ import 'package:polkawallet_sdk/utils/app.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/roundedCard.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class KaruraEntryPage extends StatelessWidget {
   KaruraEntryPage(this.plugin);
@@ -74,7 +75,7 @@ class KaruraEntryPage extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .headline1
-                          .copyWith(fontSize: 18),
+                          .copyWith(fontSize: UI.getTextSize(18, context)),
                     ),
                   )
                 ],
@@ -94,7 +95,7 @@ class KaruraEntryPage extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .headline1
-                              .copyWith(fontSize: 18),
+                              .copyWith(fontSize: UI.getTextSize(18, context)),
                         ),
                       ),
                       Image.asset(
@@ -104,7 +105,7 @@ class KaruraEntryPage extends StatelessWidget {
                   ),
                   subtitle: Text(
                     dic['kar.$e.brief'],
-                    style: TextStyle(fontSize: 14),
+                    style: TextStyle(fontSize: UI.getTextSize(14, context)),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios, size: 18),
                   onTap: () => _goToKar(context, e),

@@ -7,6 +7,7 @@ import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/listTail.dart';
 import 'package:polkawallet_ui/components/tokenIcon.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/utils/index.dart';
 
 class AssetsListPage extends StatefulWidget {
   AssetsListPage(this.plugin);
@@ -55,7 +56,8 @@ class _AssetsListPageState extends State<AssetsListPage> {
               controller: _filterCtrl,
               placeholder: dic['assets.filter'],
               placeholderStyle: TextStyle(
-                  fontSize: 14, color: Theme.of(context).disabledColor),
+                  fontSize: UI.getTextSize(14, context),
+                  color: Theme.of(context).disabledColor),
               cursorHeight: 14,
               style: TextStyle(fontSize: 14),
               suffix: Container(
