@@ -23,6 +23,7 @@ import 'package:polkawallet_ui/components/v3/addressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/addressTextFormField.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/index.dart' as v3;
 import 'package:polkawallet_ui/components/v3/infoItemRow.dart';
 import 'package:polkawallet_ui/components/v3/roundedCard.dart';
@@ -239,7 +240,8 @@ class _TransferPageState extends State<TransferPage> {
           builder: (_) {
             final dic =
                 I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
-            return CupertinoAlertDialog(
+            return PolkawalletAlertDialog(
+              type: DialogType.warn,
               title: Text(dic['cross.warn']),
               content: Text(dic['cross.warn.info']),
               actions: [
@@ -413,7 +415,7 @@ class _TransferPageState extends State<TransferPage> {
         final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
         final dicDeFi =
             I18n.of(context).getDic(i18n_full_dic_statemine, 'defi');
-        return CupertinoAlertDialog(
+        return PolkawalletAlertDialog(
           title: Text(dicDeFi['xcm.tip.title']),
           content: Column(
             children: [

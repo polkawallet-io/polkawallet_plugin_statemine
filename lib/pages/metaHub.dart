@@ -6,6 +6,7 @@ import 'package:polkawallet_plugin_statemine/pages/defi/karuraEntryPage.dart';
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
 import 'package:polkawallet_plugin_statemine/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginItemCard.dart';
 
 class MetaHubPanel extends StatelessWidget {
@@ -64,7 +65,7 @@ class MetaHubPanel extends StatelessWidget {
                   showCupertinoDialog(
                     context: context,
                     builder: (context) {
-                      return CupertinoAlertDialog(
+                      return PolkawalletAlertDialog(
                         title: Text(dic['upgrading']),
                         content: Text(dic['upgrading.context']),
                         actions: <Widget>[
