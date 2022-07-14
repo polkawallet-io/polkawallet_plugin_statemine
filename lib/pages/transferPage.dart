@@ -611,6 +611,7 @@ class _TransferPageState extends State<TransferPage> {
                                     });
                                   },
                                   key: ValueKey<KeyPairData>(_accountTo),
+                                  sdk: widget.plugin.sdk,
                                 ),
                               ),
                               Visibility(
