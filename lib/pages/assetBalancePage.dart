@@ -81,6 +81,8 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                 ? tokenPrice * Fmt.bigIntToDouble(free, balance.decimals)
                 : 0;
             return RefreshIndicator(
+              color: Colors.black,
+              backgroundColor: Colors.white,
               key: _refreshKey,
               onRefresh: _updateData,
               child: Column(

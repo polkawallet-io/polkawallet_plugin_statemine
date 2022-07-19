@@ -111,7 +111,8 @@ class _AssetDetailPageState extends State<AssetDetailPage> {
                   child: detail == null
                       ? Container(
                           height: MediaQuery.of(context).size.width,
-                          child: CupertinoActivityIndicator(),
+                          child: CupertinoActivityIndicator(
+                              color: const Color(0xFF3C3C44)),
                         )
                       : Column(
                           children: [

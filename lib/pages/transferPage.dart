@@ -245,12 +245,13 @@ class _TransferPageState extends State<TransferPage> {
               title: Text(dic['cross.warn']),
               content: Text(dic['cross.warn.info']),
               actions: [
-                CupertinoButton(
+                PolkawalletActionSheetAction(
                     child: Text(dic['cancel']),
                     onPressed: () {
                       Navigator.of(context).pop(false);
                     }),
-                CupertinoButton(
+                PolkawalletActionSheetAction(
+                    isDefaultAction: true,
                     child: Text(dic['ok']),
                     onPressed: () {
                       Navigator.of(context).pop(true);
@@ -450,7 +451,7 @@ class _TransferPageState extends State<TransferPage> {
             ],
           ),
           actions: [
-            CupertinoButton(
+            PolkawalletActionSheetAction(
                 child: Text(dic['ok']),
                 onPressed: () {
                   Navigator.of(context).popAndPushNamed(KaruraEntryPage.route);
