@@ -81,7 +81,7 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                 ? tokenPrice * Fmt.bigIntToDouble(free, balance.decimals)
                 : 0;
             return RefreshIndicator(
-              color: Colors.black,
+              color: Colors.transparent,
               backgroundColor: Colors.white,
               key: _refreshKey,
               onRefresh: _updateData,
@@ -93,7 +93,7 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                       Container(
                         width: MediaQuery.of(context).size.width,
                         alignment: Alignment.center,
-                        color: primaryColor,
+                        color: Colors.transparent,
                         padding: EdgeInsets.only(bottom: 24),
                         margin: EdgeInsets.only(bottom: 24),
                         child: Padding(
@@ -105,7 +105,10 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                                 child: Text(
                                   Fmt.token(free, token.decimals, length: 8),
                                   style: TextStyle(
-                                    color: titleColor,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        ?.color,
                                     fontSize: UI.getTextSize(28, context),
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -128,23 +131,20 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                           ),
                         ),
                       ),
-                      Container(
-                        height: 48,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: titleColor,
-                          borderRadius:
-                              const BorderRadius.all(const Radius.circular(16)),
-                        ),
-                      ),
+                      // Container(
+                      //   height: 48,
+                      //   width: MediaQuery.of(context).size.width,
+                      //   decoration: BoxDecoration(
+                      //     color: titleColor,
+                      //     borderRadius:
+                      //         const BorderRadius.all(const Radius.circular(16)),
+                      //   ),
+                      // ),
                     ],
                   ),
-                  Expanded(
-                      child: Container(
-                    color: Theme.of(context).cardColor,
-                  )),
+                  Expanded(child: Container()),
                   Container(
-                    color: titleColor,
+                    color: Colors.transparent,
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -167,9 +167,13 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
                             padding: EdgeInsets.fromLTRB(8, 8, 16, 8),
                             child: RoundedButton(
                               icon: SizedBox(
-                                height: 20,
+                                height: 30,
                                 child: Image.asset(
-                                    'packages/polkawallet_plugin_acala/assets/images/assets_send.png'),
+                                    'packages/polkawallet_plugin_statemine/assets/images/send.png',
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .button
+                                        .color),
                               ),
                               text: dic['transfer'],
                               color: colorOut,
