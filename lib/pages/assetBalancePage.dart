@@ -35,9 +35,6 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
 
   Future<void> _updateData() async {
     widget.plugin.updateBalances(widget.keyring.current);
-
-    final TokenBalanceData asset = ModalRoute.of(context).settings.arguments;
-    widget.plugin.service.assets.queryMarketPrices([asset.symbol]);
   }
 
   @override
