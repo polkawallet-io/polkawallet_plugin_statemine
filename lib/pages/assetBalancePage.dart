@@ -45,8 +45,6 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _updateData();
-
       final TokenBalanceData asset = ModalRoute.of(context).settings.arguments;
       if (widget.plugin.store.assets.assetsDetails[asset.id] == null) {
         widget.plugin.service.assets.getAssetsDetail(asset.id);

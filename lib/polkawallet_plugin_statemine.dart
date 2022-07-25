@@ -136,6 +136,14 @@ class PluginStatemine extends PolkawalletPlugin {
         .map((k, v) {
           v.amount = res[k].balance;
           v.detailPageRoute = AssetBalancePage.route;
+          v.getPrice = () {
+            final tokenPrice = _store.assets.marketPrices[v.symbol];
+            return (tokenPrice ?? 0) > 0
+                ? tokenPrice *
+                    Fmt.bigIntToDouble(
+                        Fmt.balanceInt(v.amount ?? '0'), v.decimals)
+                : 0;
+          };
           return MapEntry(k, v);
         })
         .values
@@ -144,6 +152,9 @@ class PluginStatemine extends PolkawalletPlugin {
 
     assetsBalances.retainWhere(
         (e) => Fmt.balanceInt(e.amount) > BigInt.zero || e.symbol == 'RMRK');
+
+    _service.assets
+        .queryMarketPrices(assetsBalances.map((e) => e.symbol).toList());
     balances.setTokens(assetsBalances);
 
     Future.wait(
