@@ -28,6 +28,7 @@ const Map<String, String> enCommon = {
   'currency': 'Currency',
   'currency.select': 'Select Currency',
   'make': 'Make Transfer',
+  'asset.tokenInfo': 'Token Info',
   'asset.symbol': 'Symbol',
   'asset.name': 'Name',
   'asset.decimals': 'Decimals',

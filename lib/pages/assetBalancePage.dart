@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:polkawallet_plugin_statemine/pages/transferPage.dart';
@@ -7,11 +6,14 @@ import 'package:polkawallet_plugin_statemine/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/plugin/store/balances.dart';
 import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
-import 'package:polkawallet_ui/components/roundedButton.dart';
+import 'package:polkawallet_ui/components/v3/infoItemRow.dart';
+import 'package:polkawallet_ui/components/tokenIcon.dart';
+import 'package:polkawallet_ui/components/v3/borderedTitle.dart';
+import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/pages/accountQrCodePage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
-import 'package:polkawallet_ui/utils/index.dart';
+import 'package:polkawallet_ui/components/v3/button.dart';
 
 class AssetBalancePage extends StatefulWidget {
   AssetBalancePage(this.plugin, this.keyring);
@@ -57,9 +59,14 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
     final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
 
     final TokenBalanceData token = ModalRoute.of(context).settings.arguments;
+    final btnTextColor = Color(0xFF242528);
 
-    final primaryColor = Theme.of(context).primaryColor;
-    final titleColor = Theme.of(context).cardColor;
+    final labelStyle = Theme.of(context)
+        .textTheme
+        .headline4
+        ?.copyWith(fontWeight: FontWeight.w600);
+
+    final valueStyle = Theme.of(context).textTheme.headline4;
 
     return Scaffold(
       appBar: AppBar(
@@ -80,124 +87,183 @@ class _AssetBalancePageSate extends State<AssetBalancePage> {
             final tokenValue = (tokenPrice ?? 0) > 0
                 ? tokenPrice * Fmt.bigIntToDouble(free, balance.decimals)
                 : 0;
+
+            final detail = widget.plugin.store.assets.assetsDetails[token.id];
             return RefreshIndicator(
               color: Colors.transparent,
               backgroundColor: Colors.white,
               key: _refreshKey,
               onRefresh: _updateData,
-              child: Column(
-                children: <Widget>[
-                  Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        alignment: Alignment.center,
-                        color: Colors.transparent,
-                        padding: EdgeInsets.only(bottom: 24),
-                        margin: EdgeInsets.only(bottom: 24),
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 16, bottom: 40),
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(bottom: 24),
-                                child: Text(
-                                  Fmt.token(free, token.decimals, length: 8),
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .headline1
-                                        ?.color,
-                                    fontSize: UI.getTextSize(28, context),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                  visible: tokenValue > 0,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(bottom: 16),
-                                    child: Text(
-                                      tokenValue > 0
-                                          ? '≈ \$ ${Fmt.priceFloor(tokenValue as double)}'
-                                          : "",
-                                      style: TextStyle(
-                                        color: Theme.of(context).cardColor,
-                                      ),
-                                    ),
-                                  )),
-                            ],
-                          ),
+              child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    children: <Widget>[
+                      RoundedCard(
+                        padding: EdgeInsets.all(8),
+                        child: TokenIcon(
+                          token.id,
+                          widget.plugin.tokenIcons,
+                          size: 60,
                         ),
                       ),
-                      // Container(
-                      //   height: 48,
-                      //   width: MediaQuery.of(context).size.width,
-                      //   decoration: BoxDecoration(
-                      //     color: titleColor,
-                      //     borderRadius:
-                      //         const BorderRadius.all(const Radius.circular(16)),
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                  Expanded(child: Container()),
-                  Container(
-                    color: Colors.transparent,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
-                            child: RoundedButton(
-                              icon: Icon(Icons.qr_code,
-                                  color: titleColor, size: 24),
-                              text: dic['receive'],
-                              color: colorIn,
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, AccountQrCodePage.route);
-                              },
-                            ),
-                          ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 8, top: 16),
+                        child: Text(
+                          Fmt.token(free, token.decimals, length: 8),
+                          style: Theme.of(context).textTheme.headline1,
                         ),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(8, 8, 16, 8),
-                            child: RoundedButton(
-                              icon: SizedBox(
-                                height: 30,
-                                child: Image.asset(
-                                    'packages/polkawallet_plugin_statemine/assets/images/send.png',
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .button
-                                        .color),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 16),
+                        child: Text(
+                          tokenValue > 0
+                              ? '≈ \$ ${Fmt.priceFloor(tokenValue as double)}'
+                              : "",
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(top: 20, bottom: 16),
+                          child: BorderedTitle(
+                            title: dic['asset.tokenInfo'],
+                          )),
+                      RoundedCard(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 6),
+                                child: InfoItemRow(
+                                  dic['asset.symbol'],
+                                  token.symbol,
+                                  labelStyle: labelStyle,
+                                  contentStyle: valueStyle,
+                                )),
+                            Divider(
+                              height: 1,
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 6),
+                                child: InfoItemRow(
+                                  dic['asset.name'],
+                                  token.name,
+                                  labelStyle: labelStyle,
+                                  contentStyle: valueStyle,
+                                )),
+                            Divider(
+                              height: 1,
+                            ),
+                            Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 6),
+                                child: InfoItemRow(
+                                  dic['asset.decimals'],
+                                  token.decimals.toString(),
+                                  labelStyle: labelStyle,
+                                  contentStyle: valueStyle,
+                                )),
+                            detail != null
+                                ? Column(children: [
+                                    Divider(
+                                      height: 1,
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 6),
+                                        child: InfoItemRow(
+                                          dic['asset.supply'],
+                                          Fmt.priceFloorBigInt(
+                                              Fmt.balanceInt(
+                                                  detail['supply'].toString()),
+                                              token.decimals,
+                                              lengthMax: 8),
+                                          labelStyle: labelStyle,
+                                          contentStyle: valueStyle,
+                                        )),
+                                    Divider(
+                                      height: 1,
+                                    ),
+                                    Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 6),
+                                        child: InfoItemRow(
+                                          dic['asset.minBalance'],
+                                          Fmt.priceFloorBigInt(
+                                              Fmt.balanceInt(
+                                                  detail['minBalance']
+                                                      .toString()),
+                                              token.decimals,
+                                              lengthMax: 6),
+                                          labelStyle: labelStyle,
+                                          contentStyle: valueStyle,
+                                        )),
+                                  ])
+                                : Container()
+                          ],
+                        ),
+                      ),
+                      Container(
+                        color: Colors.transparent,
+                        margin: EdgeInsets.only(top: 36),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Button(
+                                height: 44,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .button
+                                    ?.copyWith(color: btnTextColor),
+                                icon: SizedBox(
+                                  height: 24,
+                                  child: Image.asset(
+                                      'packages/polkawallet_plugin_statemine/assets/images/receive.png'),
+                                ),
+                                title: dic['receive'],
+                                isBlueBg: false,
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, AccountQrCodePage.route);
+                                },
                               ),
-                              text: dic['transfer'],
-                              color: colorOut,
-                              onPressed: () async {
-                                final res = await Navigator.pushNamed(
-                                  context,
-                                  TransferPage.route,
-                                  arguments: {
-                                    'tokenId': token.id,
-                                    'network': widget.plugin.basic.name
-                                  },
-                                );
-                                if (res != null) {
-                                  _refreshKey.currentState.show();
-                                }
-                              },
                             ),
-                          ),
+                            Container(width: 20),
+                            Expanded(
+                              child: Button(
+                                height: 44,
+                                icon: SizedBox(
+                                  height: 24,
+                                  child: Image.asset(
+                                      'packages/polkawallet_plugin_statemine/assets/images/send.png'),
+                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .button
+                                    ?.copyWith(color: btnTextColor),
+                                title: dic['transfer'],
+                                isBlueBg: true,
+                                onPressed: () async {
+                                  final res = await Navigator.pushNamed(
+                                    context,
+                                    TransferPage.route,
+                                    arguments: {
+                                      'tokenId': token.id,
+                                      'network': widget.plugin.basic.name
+                                    },
+                                  );
+                                  if (res != null) {
+                                    _refreshKey.currentState.show();
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                      ),
+                    ],
+                  )),
             );
           },
         ),
