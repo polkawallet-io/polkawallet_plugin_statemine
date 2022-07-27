@@ -1,9 +1,14 @@
 const Map<String, String> enDefi = {
   'kar.title': 'DeFi on Karura',
   'kar.brief': 'Participate in [Mint kUSD], [Swap] or [Earn] on Karura.',
+  'aca.title': 'DeFi on Acala',
+  'aca.brief': 'Participate in [Mint AUSD], [Swap] or [Earn] on Acala.',
   'kar.loan': 'Mint kUSD',
   'kar.loan.brief':
       'Leverage your digital assets by depositing them as collateral to mint kUSD.',
+  'kar.loan_aca': 'Mint AUSD',
+  'kar.loan_aca.brief':
+      'Leverage your digital assets by depositing them as collateral to mint AUSD.',
   'kar.swap': 'Swap',
   'kar.swap.brief':
       'Swap tokens or provide liquidity in Karura Decentralized Exchange.',

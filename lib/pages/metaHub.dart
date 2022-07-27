@@ -39,13 +39,21 @@ class MetaHubPanel extends StatelessWidget {
             switch (e) {
               case module_name_assets:
                 title = dic['assets'];
-                describe = dic['assets.brief'];
+                describe = plugin.basic.name == 'statemine'
+                    ? dic['assets.brief']
+                    : dic['assets.brief.statemint'];
                 break;
               case module_name_defi:
-                title = I18n.of(context)
-                    .getDic(i18n_full_dic_statemine, 'defi')['kar.title'];
-                describe = I18n.of(context)
-                    .getDic(i18n_full_dic_statemine, 'defi')['kar.brief'];
+                title =
+                    I18n.of(context).getDic(i18n_full_dic_statemine, 'defi')[
+                        plugin.basic.name == 'statemine'
+                            ? 'kar.title'
+                            : 'aca.title'];
+                describe =
+                    I18n.of(context).getDic(i18n_full_dic_statemine, 'defi')[
+                        plugin.basic.name == 'statemine'
+                            ? 'kar.brief'
+                            : 'aca.brief'];
                 break;
             }
 

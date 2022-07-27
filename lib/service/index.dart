@@ -39,7 +39,7 @@ class PluginService {
   }
 
   Future<void> fetchRemoteConfig() async {
-    final res = await WalletApi.getRemoteConfig();
+    final res = await WalletApi.getRemoteConfig(plugin.basic.name);
     if (res != null) {
       plugin.store.settings.setRemoteConfig(res);
 

@@ -1,6 +1,7 @@
 const Map<String, String> enCommon = {
   'assets': 'Assets',
   'assets.brief': 'Tokens issued on the Statemine network.',
+  'assets.brief.statemint': 'Tokens issued on the Statemint network.',
   'assets.filter': 'Filter by name/symbol/ID',
   'transfer': 'Transfer',
   'receive': 'Receive',

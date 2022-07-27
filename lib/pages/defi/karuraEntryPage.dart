@@ -16,27 +16,31 @@ class KaruraEntryPage extends StatelessWidget {
 
   void _goToKar(BuildContext context, String module) {
     Navigator.popUntil(context, ModalRoute.withName('/'));
+    final network = plugin.basic.name == 'statemine' ? 'karura' : 'acala';
     switch (module) {
       case 'loan':
         plugin.appUtils.switchNetwork(
-          'karura',
-          pageRoute:
-              PageRouteParams('/karura/loan', args: {'loanType': 'fa://0'}),
+          network,
+          pageRoute: PageRouteParams('/$network/loan',
+              args: {'loanType': 'fa://0'}), //rmrk
         );
         break;
       case 'swap':
         plugin.appUtils.switchNetwork(
-          'karura',
-          pageRoute: PageRouteParams('/karura/dex', args: {
-            'swapPair': ['fa://0', 'KUSD']
+          network,
+          pageRoute: PageRouteParams('/$network/dex', args: {
+            'swapPair': [
+              'fa://0', //rmrk
+              plugin.basic.name == 'statemine' ? 'KUSD' : 'AUSD'
+            ]
           }),
         );
         break;
       case 'earn':
         plugin.appUtils.switchNetwork(
-          'karura',
-          pageRoute: PageRouteParams('/karura/earn/deposit',
-              args: {'poolId': 'lp://KUSD/fa%3A%2F%2F0'}),
+          network,
+          pageRoute: PageRouteParams('/$network/earn/deposit',
+              args: {'poolId': 'lp://KUSD/fa%3A%2F%2F0'}), //ausd-rmrk
         );
         break;
     }
@@ -52,7 +56,8 @@ class KaruraEntryPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(dic['kar.title']),
+        title: Text(
+            dic[plugin.basic.name == 'statemine' ? 'kar.title' : 'aca.title']),
         centerTitle: true,
         leading: BackBtn(),
       ),
@@ -64,13 +69,13 @@ class KaruraEntryPage extends StatelessWidget {
               child: Row(
                 children: [
                   Image.asset(
-                    'packages/polkawallet_plugin_statemine/assets/images/tokens/KAR.png',
+                    'packages/polkawallet_plugin_statemine/assets/images/tokens/${plugin.basic.name == 'statemine' ? 'KAR' : 'ACA'}.png',
                     height: 24,
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 6),
                     child: Text(
-                      'KARURA',
+                      plugin.basic.name == 'statemine' ? 'KAR' : 'ACA',
                       style: Theme.of(context)
                           .textTheme
                           .headline1
@@ -81,6 +86,9 @@ class KaruraEntryPage extends StatelessWidget {
               ),
             ),
             ...items.map((e) {
+              final action = e == 'loan'
+                  ? 'loan${plugin.basic.name == 'statemine' ? '' : '_aca'}'
+                  : e;
               return RoundedCard(
                 margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
                 padding: EdgeInsets.only(top: 8, bottom: 8),
@@ -90,7 +98,7 @@ class KaruraEntryPage extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(right: 8),
                         child: Text(
-                          dic['kar.$e'],
+                          dic['kar.$action'],
                           style: Theme.of(context)
                               .textTheme
                               .headline1
@@ -103,7 +111,7 @@ class KaruraEntryPage extends StatelessWidget {
                     ],
                   ),
                   subtitle: Text(
-                    dic['kar.$e.brief'],
+                    dic['kar.$action.brief'],
                     style: TextStyle(fontSize: UI.getTextSize(14, context)),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios, size: 18),

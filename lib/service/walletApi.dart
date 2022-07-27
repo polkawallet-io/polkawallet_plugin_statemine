@@ -6,9 +6,9 @@ class WalletApi {
   static const String _endpoint = 'https://api.polkawallet.io';
   static const String _configEndpoint = 'https://acala.polkawallet-cloud.com';
 
-  static Future<Map> getRemoteConfig() async {
-    final url = '$_configEndpoint/config/statemineConfig.json';
-    // final url = '$_endpoint/config/statemineConfig.json';
+  static Future<Map> getRemoteConfig(String name) async {
+    final url = '$_configEndpoint/config/${name}Config.json';
+    // final url = '$_endpoint/config/${name}Config.json';
     try {
       Response res = await get(Uri.parse(url));
       if (res == null) {
