@@ -16,7 +16,6 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/tapTooltip.dart';
-import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/tokenIcon.dart';
 import 'package:polkawallet_ui/components/v3/addressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
@@ -25,7 +24,6 @@ import 'package:polkawallet_ui/components/v3/back.dart';
 import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/index.dart' as v3;
 import 'package:polkawallet_ui/components/v3/infoItemRow.dart';
-import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/components/v3/txButton.dart';
 import 'package:polkawallet_ui/pages/scanPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
@@ -496,11 +494,6 @@ class _TransferPageState extends State<TransferPage> {
 
         final tokensConfig =
             widget.plugin.store.settings.remoteConfig['tokens'] ?? {};
-        final List tokenXcmConfig = tokensConfig['xcm'] != null
-            ? tokensConfig['xcm'][token.id]
-            : config_xcm['xcm'][token.id] ?? [];
-        final canCrossChain =
-            tokenXcmConfig != null && tokenXcmConfig.length > 0;
 
         final nativeTokenBalance =
             Fmt.balanceInt(widget.plugin.balances.native.freeBalance) -
@@ -672,11 +665,13 @@ class _TransferPageState extends State<TransferPage> {
                                             color: Theme.of(context)
                                                 .toggleableActiveColor)),
                                     onTap: () {
+                                      final max = available - existDeposit;
+                                      if (max <= BigInt.zero) return;
+
                                       setState(() {
-                                        _amountMax = available - existDeposit;
+                                        _amountMax = max;
                                         _amountCtrl.text = Fmt.bigIntToDouble(
-                                                available - existDeposit,
-                                                token.decimals)
+                                                max, token.decimals)
                                             .toStringAsFixed(8);
                                       });
                                     },
@@ -715,74 +710,6 @@ class _TransferPageState extends State<TransferPage> {
                             ],
                           ),
                         ),
-                        Visibility(
-                            visible: canCrossChain,
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 4, top: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 4),
-                                      child: Text(
-                                        dic['cross.chain'],
-                                        style: labelStyle,
-                                      ),
-                                    ),
-                                    RoundedCard(
-                                      padding: EdgeInsets.all(8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 8),
-                                                width: 32,
-                                                height: 32,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(32),
-                                                  child: isCrossChain
-                                                      ? TokenIcon(_chainTo,
-                                                          crossChainIcons)
-                                                      : widget
-                                                          .plugin.basic.icon,
-                                                ),
-                                              ),
-                                              Text(chainTo.toUpperCase())
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Visibility(
-                                                  visible: isCrossChain,
-                                                  child: TextTag(
-                                                      dic['cross.xcm'],
-                                                      margin: EdgeInsets.only(
-                                                          right: 8),
-                                                      color: Theme.of(context)
-                                                          .errorColor)),
-                                              Icon(
-                                                Icons.arrow_forward_ios,
-                                                size: 18,
-                                                color: Theme.of(context)
-                                                    .unselectedWidgetColor,
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              onTap: () => _onSelectChain(crossChainIcons),
-                            )),
                         Visibility(
                           visible: isNativeTokenLow,
                           child: Container(

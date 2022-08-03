@@ -8,7 +8,7 @@ class WalletApi {
 
   static Future<Map> getRemoteConfig(String name) async {
     final url = '$_configEndpoint/config/${name}Config.json';
-    // final url = '$_endpoint/config/${name}Config.json';
+    // final url = '$_endpoint/devConfiguration/config/${name}Config.json';
     try {
       Response res = await get(Uri.parse(url));
       if (res == null) {
