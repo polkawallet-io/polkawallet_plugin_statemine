@@ -1,8 +1,12 @@
 const Map<String, String> zhDefi = {
   'kar.title': 'Karura 网络 Defi',
   'kar.brief': '参与 Karura 网络的 [生成 kUSD], [兑换] 或 [盈利].',
+  'aca.title': 'Acala 网络 Defi',
+  'aca.brief': '参与 Acala 网络的 [生成 AUSD], [兑换] 或 [盈利].',
   'kar.loan': '生成 kUSD',
   'kar.loan.brief': '将您的数字资产（如：KSM）锁定作为质押，可以借出相应数量的 kUSD.',
+  'kar.loan_aca': '生成 AUSD',
+  'kar.loan_aca.brief': '将您的数字资产（如：DOT）锁定作为质押，可以借出相应数量的 AUSD.',
   'kar.swap': '兑换',
   'kar.swap.brief': '与流动性池进行去中心化 Token 交易.',
   'kar.earn': '盈利',

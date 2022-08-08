@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,15 +16,14 @@ import 'package:polkawallet_sdk/storage/keyring.dart';
 import 'package:polkawallet_sdk/storage/types/keyPairData.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
 import 'package:polkawallet_ui/components/tapTooltip.dart';
-import 'package:polkawallet_ui/components/textTag.dart';
 import 'package:polkawallet_ui/components/tokenIcon.dart';
 import 'package:polkawallet_ui/components/v3/addressFormItem.dart';
 import 'package:polkawallet_ui/components/v3/addressIcon.dart';
 import 'package:polkawallet_ui/components/v3/addressTextFormField.dart';
 import 'package:polkawallet_ui/components/v3/back.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/index.dart' as v3;
 import 'package:polkawallet_ui/components/v3/infoItemRow.dart';
-import 'package:polkawallet_ui/components/v3/roundedCard.dart';
 import 'package:polkawallet_ui/components/v3/txButton.dart';
 import 'package:polkawallet_ui/pages/scanPage.dart';
 import 'package:polkawallet_ui/utils/format.dart';
@@ -173,10 +171,10 @@ class _TransferPageState extends State<TransferPage> {
 
     showCupertinoModalPopup(
       context: context,
-      builder: (_) => CupertinoActionSheet(
+      builder: (_) => PolkawalletActionSheet(
         title: Text(dic['cross.chain.select']),
         actions: options.map((e) {
-          return CupertinoActionSheetAction(
+          return PolkawalletActionSheetAction(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -221,7 +219,7 @@ class _TransferPageState extends State<TransferPage> {
             },
           );
         }).toList(),
-        cancelButton: CupertinoActionSheetAction(
+        cancelButton: PolkawalletActionSheetAction(
           child: Text(I18n.of(context)
               .getDic(i18n_full_dic_statemine, 'common')['cancel']),
           onPressed: () {
@@ -239,16 +237,18 @@ class _TransferPageState extends State<TransferPage> {
           builder: (_) {
             final dic =
                 I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
-            return CupertinoAlertDialog(
+            return PolkawalletAlertDialog(
+              type: DialogType.warn,
               title: Text(dic['cross.warn']),
               content: Text(dic['cross.warn.info']),
               actions: [
-                CupertinoButton(
+                PolkawalletActionSheetAction(
                     child: Text(dic['cancel']),
                     onPressed: () {
                       Navigator.of(context).pop(false);
                     }),
-                CupertinoButton(
+                PolkawalletActionSheetAction(
+                    isDefaultAction: true,
                     child: Text(dic['ok']),
                     onPressed: () {
                       Navigator.of(context).pop(true);
@@ -413,7 +413,7 @@ class _TransferPageState extends State<TransferPage> {
         final dic = I18n.of(context).getDic(i18n_full_dic_statemine, 'common');
         final dicDeFi =
             I18n.of(context).getDic(i18n_full_dic_statemine, 'defi');
-        return CupertinoAlertDialog(
+        return PolkawalletAlertDialog(
           title: Text(dicDeFi['xcm.tip.title']),
           content: Column(
             children: [
@@ -448,7 +448,7 @@ class _TransferPageState extends State<TransferPage> {
             ],
           ),
           actions: [
-            CupertinoButton(
+            PolkawalletActionSheetAction(
                 child: Text(dic['ok']),
                 onPressed: () {
                   Navigator.of(context).popAndPushNamed(KaruraEntryPage.route);
@@ -494,11 +494,6 @@ class _TransferPageState extends State<TransferPage> {
 
         final tokensConfig =
             widget.plugin.store.settings.remoteConfig['tokens'] ?? {};
-        final List tokenXcmConfig = tokensConfig['xcm'] != null
-            ? tokensConfig['xcm'][token.id]
-            : config_xcm['xcm'][token.id] ?? [];
-        final canCrossChain =
-            tokenXcmConfig != null && tokenXcmConfig.length > 0;
 
         final nativeTokenBalance =
             Fmt.balanceInt(widget.plugin.balances.native.freeBalance) -
@@ -609,6 +604,7 @@ class _TransferPageState extends State<TransferPage> {
                                     });
                                   },
                                   key: ValueKey<KeyPairData>(_accountTo),
+                                  sdk: widget.plugin.sdk,
                                 ),
                               ),
                               Visibility(
@@ -617,7 +613,9 @@ class _TransferPageState extends State<TransferPage> {
                                     margin: EdgeInsets.only(top: 4),
                                     child: Text(_accountToError ?? "",
                                         style: TextStyle(
-                                            fontSize: 12, color: Colors.red)),
+                                            fontSize:
+                                                UI.getTextSize(12, context),
+                                            color: Colors.red)),
                                   )),
                               Visibility(
                                 visible: isCrossChain,
@@ -635,7 +633,9 @@ class _TransferPageState extends State<TransferPage> {
                                           padding: EdgeInsets.only(top: 8),
                                           child: Text(
                                             dic['cross.edit'],
-                                            style: TextStyle(fontSize: 14),
+                                            style: TextStyle(
+                                                fontSize: UI.getTextSize(
+                                                    14, context)),
                                           ),
                                         ),
                                       ],
@@ -665,11 +665,13 @@ class _TransferPageState extends State<TransferPage> {
                                             color: Theme.of(context)
                                                 .toggleableActiveColor)),
                                     onTap: () {
+                                      final max = available - existDeposit;
+                                      if (max <= BigInt.zero) return;
+
                                       setState(() {
-                                        _amountMax = available - existDeposit;
+                                        _amountMax = max;
                                         _amountCtrl.text = Fmt.bigIntToDouble(
-                                                available - existDeposit,
-                                                token.decimals)
+                                                max, token.decimals)
                                             .toStringAsFixed(8);
                                       });
                                     },
@@ -708,74 +710,6 @@ class _TransferPageState extends State<TransferPage> {
                             ],
                           ),
                         ),
-                        Visibility(
-                            visible: canCrossChain,
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 4, top: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 4),
-                                      child: Text(
-                                        dic['cross.chain'],
-                                        style: labelStyle,
-                                      ),
-                                    ),
-                                    RoundedCard(
-                                      padding: EdgeInsets.all(8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 8),
-                                                width: 32,
-                                                height: 32,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(32),
-                                                  child: isCrossChain
-                                                      ? TokenIcon(_chainTo,
-                                                          crossChainIcons)
-                                                      : widget
-                                                          .plugin.basic.icon,
-                                                ),
-                                              ),
-                                              Text(chainTo.toUpperCase())
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Visibility(
-                                                  visible: isCrossChain,
-                                                  child: TextTag(
-                                                      dic['cross.xcm'],
-                                                      margin: EdgeInsets.only(
-                                                          right: 8),
-                                                      color: Theme.of(context)
-                                                          .errorColor)),
-                                              Icon(
-                                                Icons.arrow_forward_ios,
-                                                size: 18,
-                                                color: Theme.of(context)
-                                                    .unselectedWidgetColor,
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              onTap: () => _onSelectChain(crossChainIcons),
-                            )),
                         Visibility(
                           visible: isNativeTokenLow,
                           child: Container(

@@ -22,13 +22,44 @@ const plugin_node_list = {
       'ss58': 2,
       'endpoint': 'wss://statemine.api.onfinality.io/public-ws',
     },
+    {
+      'name': 'Statemine (hosted by dwellir)',
+      'ss58': 2,
+      'endpoint': 'wss://statemine-rpc.dwellir.com',
+    },
+    {
+      'name': 'Statemine (hosted by pinknode)',
+      'ss58': 2,
+      'endpoint': 'wss://public-rpc.pinknode.io/statem',
+    },
     // {
     //   'name': 'Westmint (hosted by Parity)',
     //   'ss58': 42,
     //   'endpoint': 'wss://westmint-rpc.polkadot.io',
     // },
   ],
-  network_name_statemint: [],
+  network_name_statemint: [
+    {
+      'name': 'Statemint (hosted by Parity)',
+      'ss58': 0,
+      'endpoint': 'wss://statemint-rpc.polkadot.io',
+    },
+    {
+      'name': 'Statemint (hosted by onfinality)',
+      'ss58': 0,
+      'endpoint': 'wss://statemint.api.onfinality.io/publi',
+    },
+    {
+      'name': 'Statemint (hosted by dwellir)',
+      'ss58': 0,
+      'endpoint': 'wss://statemint-rpc.dwellir.com',
+    },
+    {
+      'name': 'Statemint (hosted by pinknode)',
+      'ss58': 0,
+      'endpoint': 'wss://public-rpc.pinknode.io/statemi',
+    },
+  ],
 };
 
 const plugin_genesis_hash = {
@@ -86,20 +117,42 @@ const config_modules = {
     'enabled': true,
   },
   module_name_defi: {
-    'visible': true,
+    'visible': false,
     'enabled': true,
     'items': {"loan": false, "swap": true, "earn": true}
   },
 };
 
 const plugin_primary_color = {
-  network_name_statemine: Colors.teal,
-  network_name_statemint: Colors.green,
+  network_name_statemine: MaterialColor(0xFF057AA9, {
+    50: Color(0xFF057AA9),
+    100: Color(0xFF057AA9),
+    200: Color(0xFF057AA9),
+    300: Color(0xFF057AA9),
+    400: Color(0xFF057AA9),
+    500: Color(0xFF057AA9),
+    600: Color(0xFF057AA9),
+    700: Color(0xFF057AA9),
+    800: Color(0xFF057AA9),
+    900: Color(0xFF057AA9)
+  }),
+  network_name_statemint: MaterialColor(0xFF3DB36A, {
+    50: Color(0xFF3DB36A),
+    100: Color(0xFF3DB36A),
+    200: Color(0xFF3DB36A),
+    300: Color(0xFF3DB36A),
+    400: Color(0xFF3DB36A),
+    500: Color(0xFF3DB36A),
+    600: Color(0xFF3DB36A),
+    700: Color(0xFF3DB36A),
+    800: Color(0xFF3DB36A),
+    900: Color(0xFF3DB36A)
+  }),
 };
 
 const plugin_gradient_color = {
-  network_name_statemine: Colors.green,
-  network_name_statemint: Colors.lightGreen,
+  network_name_statemine: Color(0xFF3CD3A0),
+  network_name_statemint: Color(0xFF90CD55),
 };
 
 const plugin_cache_key = {

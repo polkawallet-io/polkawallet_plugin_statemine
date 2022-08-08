@@ -1,6 +1,7 @@
 const Map<String, String> zhCommon = {
   'assets': '资产',
   'assets.brief': 'Statemine 网络上发行的 Token.',
+  'assets.brief.statemint': 'Statemint 网络上发行的 Token.',
   'assets.filter': '查询名称/简称/ID',
   'transfer': '转账',
   'receive': '收款',
@@ -28,6 +29,7 @@ const Map<String, String> zhCommon = {
   'currency': '币种',
   'currency.select': '选择币种',
   'make': '发起转账',
+  'asset.tokenInfo': '代币信息',
   'asset.symbol': '符号',
   'asset.name': '名称',
   'asset.decimals': '精度',

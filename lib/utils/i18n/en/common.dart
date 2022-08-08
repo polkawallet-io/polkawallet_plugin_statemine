@@ -1,6 +1,7 @@
 const Map<String, String> enCommon = {
   'assets': 'Assets',
   'assets.brief': 'Tokens issued on the Statemine network.',
+  'assets.brief.statemint': 'Tokens issued on the Statemint network.',
   'assets.filter': 'Filter by name/symbol/ID',
   'transfer': 'Transfer',
   'receive': 'Receive',
@@ -28,6 +29,7 @@ const Map<String, String> enCommon = {
   'currency': 'Currency',
   'currency.select': 'Select Currency',
   'make': 'Make Transfer',
+  'asset.tokenInfo': 'Token Info',
   'asset.symbol': 'Symbol',
   'asset.name': 'Name',
   'asset.decimals': 'Decimals',

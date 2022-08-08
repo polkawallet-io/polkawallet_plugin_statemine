@@ -6,6 +6,7 @@ import 'package:polkawallet_plugin_statemine/pages/defi/karuraEntryPage.dart';
 import 'package:polkawallet_plugin_statemine/polkawallet_plugin_statemine.dart';
 import 'package:polkawallet_plugin_statemine/utils/i18n/index.dart';
 import 'package:polkawallet_sdk/utils/i18n.dart';
+import 'package:polkawallet_ui/components/v3/dialog.dart';
 import 'package:polkawallet_ui/components/v3/plugin/pluginItemCard.dart';
 
 class MetaHubPanel extends StatelessWidget {
@@ -38,13 +39,21 @@ class MetaHubPanel extends StatelessWidget {
             switch (e) {
               case module_name_assets:
                 title = dic['assets'];
-                describe = dic['assets.brief'];
+                describe = plugin.basic.name == 'statemine'
+                    ? dic['assets.brief']
+                    : dic['assets.brief.statemint'];
                 break;
               case module_name_defi:
-                title = I18n.of(context)
-                    .getDic(i18n_full_dic_statemine, 'defi')['kar.title'];
-                describe = I18n.of(context)
-                    .getDic(i18n_full_dic_statemine, 'defi')['kar.brief'];
+                title =
+                    I18n.of(context).getDic(i18n_full_dic_statemine, 'defi')[
+                        plugin.basic.name == 'statemine'
+                            ? 'kar.title'
+                            : 'aca.title'];
+                describe =
+                    I18n.of(context).getDic(i18n_full_dic_statemine, 'defi')[
+                        plugin.basic.name == 'statemine'
+                            ? 'kar.brief'
+                            : 'aca.brief'];
                 break;
             }
 
@@ -64,11 +73,11 @@ class MetaHubPanel extends StatelessWidget {
                   showCupertinoDialog(
                     context: context,
                     builder: (context) {
-                      return CupertinoAlertDialog(
+                      return PolkawalletAlertDialog(
                         title: Text(dic['upgrading']),
                         content: Text(dic['upgrading.context']),
                         actions: <Widget>[
-                          CupertinoDialogAction(
+                          PolkawalletActionSheetAction(
                             child: Text(dic['upgrading.btn']),
                             onPressed: () {
                               Navigator.of(context).pop();

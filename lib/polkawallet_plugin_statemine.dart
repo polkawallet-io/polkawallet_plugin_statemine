@@ -28,7 +28,20 @@ class PluginStatemine extends PolkawalletPlugin {
   /// the kusama plugin support two networks: kusama & polkadot,
   /// so we need to identify the active network to connect & display UI.
   PluginStatemine({name = 'statemine'})
-      : basic = PluginBasicData(
+      : tokenIcons = name == 'statemine'
+            ? {
+                'KSM': Image.asset(
+                    'packages/polkawallet_plugin_statemine/assets/images/tokens/KSM.png'),
+                '8': Image.asset(
+                    'packages/polkawallet_plugin_statemine/assets/images/tokens/RMRK.png'),
+                '16': Image.asset(
+                    'packages/polkawallet_plugin_statemine/assets/images/tokens/ARIS.png'),
+              }
+            : {
+                'DOT': Image.asset(
+                    'packages/polkawallet_plugin_statemine/assets/images/tokens/DOT.png'),
+              },
+        basic = PluginBasicData(
           name: name,
           genesisHash: plugin_genesis_hash[name],
           ss58: plugin_ss58_format[name],
@@ -63,14 +76,7 @@ class PluginStatemine extends PolkawalletPlugin {
   }
 
   @override
-  Map<String, Widget> tokenIcons = {
-    'KSM': Image.asset(
-        'packages/polkawallet_plugin_statemine/assets/images/tokens/KSM.png'),
-    '8': Image.asset(
-        'packages/polkawallet_plugin_statemine/assets/images/tokens/RMRK.png'),
-    '16': Image.asset(
-        'packages/polkawallet_plugin_statemine/assets/images/tokens/ARIS.png'),
-  };
+  Map<String, Widget> tokenIcons;
 
   @override
   List<TokenBalanceData> get noneNativeTokensAll {
@@ -136,6 +142,14 @@ class PluginStatemine extends PolkawalletPlugin {
         .map((k, v) {
           v.amount = res[k].balance;
           v.detailPageRoute = AssetBalancePage.route;
+          v.getPrice = () {
+            final tokenPrice = _store.assets.marketPrices[v.symbol];
+            return (tokenPrice ?? 0) > 0
+                ? tokenPrice *
+                    Fmt.bigIntToDouble(
+                        Fmt.balanceInt(v.amount ?? '0'), v.decimals)
+                : 0;
+          };
           return MapEntry(k, v);
         })
         .values
@@ -144,6 +158,9 @@ class PluginStatemine extends PolkawalletPlugin {
 
     assetsBalances.retainWhere(
         (e) => Fmt.balanceInt(e.amount) > BigInt.zero || e.symbol == 'RMRK');
+
+    _service.assets
+        .queryMarketPrices(assetsBalances.map((e) => e.symbol).toList());
     balances.setTokens(assetsBalances);
 
     Future.wait(
