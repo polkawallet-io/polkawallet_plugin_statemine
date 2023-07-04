@@ -16,7 +16,8 @@ class KaruraEntryPage extends StatelessWidget {
 
   void _goToKar(BuildContext context, String module) {
     Navigator.popUntil(context, ModalRoute.withName('/'));
-    final network = plugin.basic.name == 'statemine' ? 'karura' : 'acala';
+    final network =
+        plugin.basic.name == network_name_statemine ? 'karura' : 'acala';
     switch (module) {
       case 'loan':
         plugin.appUtils.switchNetwork(
