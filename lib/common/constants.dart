@@ -13,24 +13,49 @@ const network_name_karura = 'karura';
 const plugin_node_list = {
   network_name_statemine: [
     {
-      'name': 'Statemine (hosted by Parity)',
-      'ss58': 2,
-      'endpoint': 'wss://kusama-statemine-rpc.paritytech.net',
-    },
-    {
-      'name': 'Statemine (hosted by onfinality)',
-      'ss58': 2,
-      'endpoint': 'wss://statemine.api.onfinality.io/public-ws',
-    },
-    {
-      'name': 'Statemine (hosted by dwellir)',
+      'name': 'via Dwellir',
       'ss58': 2,
       'endpoint': 'wss://statemine-rpc.dwellir.com',
     },
     {
-      'name': 'Statemine (hosted by pinknode)',
+      'name': 'via Dwellir Tunisia',
       'ss58': 2,
-      'endpoint': 'wss://public-rpc.pinknode.io/statem',
+      'endpoint': 'wss://statemine-rpc-tn.dwellir.com',
+    },
+    {
+      'name': 'via IBP-GeoDNS1',
+      'ss58': 2,
+      'endpoint': 'wss://sys.ibp.network/statemine',
+    },
+    {
+      'name': 'via IBP-GeoDNS2',
+      'ss58': 2,
+      'endpoint': 'wss://sys.dotters.network/statemine',
+    },
+    {
+      'name': 'via LuckyFriday',
+      'ss58': 2,
+      'endpoint': 'wss://rpc-statemine.luckyfriday.io',
+    },
+    {
+      'name': 'via OnFinality',
+      'ss58': 2,
+      'endpoint': 'wss://statemine.api.onfinality.io/public-ws',
+    },
+    {
+      'name': 'via Parity',
+      'ss58': 2,
+      'endpoint': 'wss://kusama-asset-hub-rpc.polkadot.io',
+    },
+    {
+      'name': 'via RadiumBlock',
+      'ss58': 2,
+      'endpoint': 'wss://statemine.public.curie.radiumblock.co/ws',
+    },
+    {
+      'name': 'via Stakeworld',
+      'ss58': 2,
+      'endpoint': 'wss://ksm-rpc.stakeworld.io/assethub',
     },
     // {
     //   'name': 'Westmint (hosted by Parity)',
@@ -40,24 +65,44 @@ const plugin_node_list = {
   ],
   network_name_statemint: [
     {
-      'name': 'Statemint (hosted by Parity)',
-      'ss58': 0,
-      'endpoint': 'wss://statemint-rpc.polkadot.io',
-    },
-    {
-      'name': 'Statemint (hosted by onfinality)',
-      'ss58': 0,
-      'endpoint': 'wss://statemint.api.onfinality.io/publi',
-    },
-    {
-      'name': 'Statemint (hosted by dwellir)',
+      'name': 'via Dwellir',
       'ss58': 0,
       'endpoint': 'wss://statemint-rpc.dwellir.com',
     },
     {
-      'name': 'Statemint (hosted by pinknode)',
+      'name': 'via Dwellir Tunisia',
       'ss58': 0,
-      'endpoint': 'wss://public-rpc.pinknode.io/statemi',
+      'endpoint': 'wss://statemint-rpc-tn.dwellir.com',
+    },
+    {
+      'name': 'via IBP-GeoDNS1',
+      'ss58': 0,
+      'endpoint': 'wss://sys.ibp.network/statemint',
+    },
+    {
+      'name': 'via IBP-GeoDNS2',
+      'ss58': 0,
+      'endpoint': 'wss://sys.dotters.network/statemint',
+    },
+    {
+      'name': 'via OnFinality',
+      'ss58': 0,
+      'endpoint': 'wss://statemint.api.onfinality.io/public-ws',
+    },
+    {
+      'name': 'via Parity',
+      'ss58': 0,
+      'endpoint': 'wss://polkadot-asset-hub-rpc.polkadot.io',
+    },
+    {
+      'name': 'via RadiumBlock',
+      'ss58': 0,
+      'endpoint': 'wss://statemint.public.curie.radiumblock.co/ws',
+    },
+    {
+      'name': 'via Stakeworld',
+      'ss58': 0,
+      'endpoint': 'wss://dot-rpc.stakeworld.io/assethub',
     },
   ],
 };

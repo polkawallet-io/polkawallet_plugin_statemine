@@ -27,8 +27,8 @@ import 'package:polkawallet_ui/utils/format.dart';
 class PluginStatemine extends PolkawalletPlugin {
   /// the kusama plugin support two networks: kusama & polkadot,
   /// so we need to identify the active network to connect & display UI.
-  PluginStatemine({name = 'statemine'})
-      : tokenIcons = name == 'statemine'
+  PluginStatemine({name = network_name_statemine})
+      : tokenIcons = name == network_name_statemine
             ? {
                 'KSM': Image.asset(
                     'packages/polkawallet_plugin_statemine/assets/images/tokens/KSM.png'),

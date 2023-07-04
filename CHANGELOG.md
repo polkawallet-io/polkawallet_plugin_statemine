@@ -1,3 +1,8 @@
+## [0.5.4] - 20230704.
+
+* bump polkawallet_sdk: 0.5.4+2.
+* rename statemine/statemint -> asset hub.
+
 ## [0.4.9] - 20220808.
 
 * bump polkawallet_sdk: 0.4.9.
