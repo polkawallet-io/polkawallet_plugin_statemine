@@ -87,7 +87,7 @@ class PluginStatemine extends PolkawalletPlugin {
   List<HomeNavItem> getNavItems(BuildContext context, Keyring keyring) {
     return [
       HomeNavItem(
-        text: basic.name.toUpperCase(),
+        text: basic.name == 'statemine' ? 'Asset Hub KSM' : 'Asset Hub',
         icon: Container(),
         iconActive: Container(),
         isAdapter: true,
