@@ -1,3 +1,7 @@
+## [0.5.5] - 20240405.
+
+* statemint genisis hash fix.
+
 ## [0.5.4] - 20230704.
 
 * bump polkawallet_sdk: 0.5.4+2.

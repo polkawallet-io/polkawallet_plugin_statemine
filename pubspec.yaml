@@ -1,6 +1,6 @@
 name: polkawallet_plugin_statemine
 description: A statemine/statemint network plugin for polkawallet.
-version: 0.5.4
+version: 0.5.5
 homepage:
 
 environment:
